@@ -16,12 +16,10 @@ int			main(int argc, char **argv, char *env[])
 {
 	pid_t	pid;
 	char	*line;
-	char	**splitline;
 	t_shell	shell;
 
 	line = NULL;
-	splitline = NULL;
-	ft_init(&shell, env);
+	ft_parse_env(&shell, env);
 	ft_swaggy_prompt();
 	while (42)
 	{
@@ -59,28 +57,31 @@ int			main(int argc, char **argv, char *env[])
 	return (0);
 }
 
-void		ft_init(t_shell *shell, char *env[])
+void		ft_parse_env(t_shell *shell, char *env[])
 {
 	int		i;
 	int		j;
+	int		n;
 
 	i = 0;
 	j = 0;
-	while (env[i] != NULL)
+	n = 0;
+	 while (env[i])
 	{
-		if (ft_strlen(env[i]) > j)
-			j = ft_strlen(env[i]);
+	 	if (ft_strlen(env[i]) > j)
+	 		j = ft_strlen(env[i]);
 		i++;
+		n++;
 	}
 	shell->env_cpy = (char **)malloc(sizeof(char*) * i + 1);
-	shell->env_cpy[i] = NULL;
 	i = 0;
-	while (env[i] != NULL)
+	while (i < n)
 	{
-		shell->env_cpy[i] = ft_strnew(j + 1);
-		shell->env_cpy[i] = ft_strdup(env[i]);
-		shell->env_cpy[i][ft_strlen(shell->env_cpy[i])] = 0;
-		i++;
+	 	shell->env_cpy[i] = ft_strnew(j);
+	 	ft_strcpy(shell->env_cpy[i], env[i]);
+	 	ft_putnbr(i);
+	 	ft_putchar('\n');
+	 	i++;
 	}
 }
 

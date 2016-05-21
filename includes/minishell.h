@@ -28,10 +28,12 @@
 typedef struct		s_shell
 {
 	char			**env_cpy;
+	char			**splitline;
 }					t_shell;
 
 void		ft_swaggy_prompt(void);
 int			ft_isexec(char **line);
-void		ft_init(t_shell *shell, char *env[]);
+void		ft_parse_env(t_shell *shell, char *env[]);
+void		ft_exec();
 
 #endif
