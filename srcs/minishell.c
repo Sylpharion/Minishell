@@ -14,47 +14,72 @@
 
 int			main(int argc, char **argv, char *env[])
 {
-	pid_t	pid;
-	char	*line;
 	t_shell	shell;
 
-	line = NULL;
+	ft_init(&shell);
 	ft_parse_env(&shell, env);
+	ft_path(&shell);
 	ft_swaggy_prompt();
 	while (42)
 	{
-		get_next_line(0, &line);
-		if (ft_strlen(line) == 0)
+		get_next_line(0, &shell.line);
+		if (ft_strlen(shell.line) == 0)
 			ft_swaggy_prompt();
 		else
 		{
-			splitline = ft_strsplit(line, ' ');
-			if (ft_isexec(splitline) == 0)
-			{
-				ft_putstr("minishell: command not found: ");
-				ft_putendl(splitline[0]);
-			}
+			shell.splitline = ft_strsplit(shell.line, ' ');
+			if (ft_isexec(shell) == 0)
+				ft_error(shell);
 			else
-				// pid = fork();
-				// if (pid == 0)
-				// 	exit (0);
-				// else if (pid > 0)
-				// 	wait(NULL);
-				/* execve */
-				if (ft_strcmp(splitline[0], "env") == 0)
-				{
-					int	ii = 0;
-					while(shell.env_cpy[ii])
-					{
-						ft_putendl(shell.env_cpy[ii]);
-						ii++;
-					}
-				}
-				ft_swaggy_prompt();
+				ft_exec(shell);
+			ft_swaggy_prompt();
 		}
 	}
 	ft_putchar('\n');
 	return (0);
+}
+
+void		ft_error(t_shell shell)
+{
+	ft_putstr("minishell: command not found: ");
+	ft_putendl(shell.splitline[0]);
+}
+
+void		ft_exec(t_shell shell)
+{
+	// shell.pid = fork();
+	// if (pid == 0)
+	// 	exit (0);
+	// else if (pid > 0)
+	// 	wait(NULL);
+	/* execve */
+	if (ft_strcmp(shell.splitline[0], "env") == 0)
+	{
+		int	ii = 0;
+		while(shell.env_cpy[ii])
+		{
+			ft_putendl(shell.env_cpy[ii]);
+			ii++;
+		}
+	}
+}
+
+int			ft_access(t_shell *shell)
+{
+
+}
+
+void		ft_path(t_shell *shell);
+{
+
+}
+
+void		ft_init(t_shell *shell)
+{
+	shell->line = NULL;
+	shell->path = NULL;
+	shell->splitline = NULL;
+	shell->env_cpy = NULL;
 }
 
 void		ft_parse_env(t_shell *shell, char *env[])
@@ -79,8 +104,6 @@ void		ft_parse_env(t_shell *shell, char *env[])
 	{
 	 	shell->env_cpy[i] = ft_strnew(j);
 	 	ft_strcpy(shell->env_cpy[i], env[i]);
-	 	ft_putnbr(i);
-	 	ft_putchar('\n');
 	 	i++;
 	}
 }
@@ -90,18 +113,20 @@ void		ft_swaggy_prompt(void)
 	ft_putrainbow("MY", RED);
 	ft_putrainbow("_SWAGGY_", BLUE);
 	ft_putrainbow("SHELL]", YELLOW);
-	ft_putrainbow(" $> ", GREEN);
+	ft_putrainbow(" <[O_O]> ", GREEN);
 }
 
-int			ft_isexec(char **line)
+int			ft_isexec(t_shell *shell)
 {
-	if (ft_strcmp(line[0], "cd") != 0 &&
-		ft_strcmp(line[0], "ls") != 0 &&
-		ft_strcmp(line[0], "env") != 0 &&
-		ft_strcmp(line[0], "setenv") != 0 &&
-		ft_strcmp(line[0], "unsetenv") != 0 &&
-		ft_strcmp(line[0], "exit") != 0)
+	if (ft_strcmp(shell->splitline[0], "cd") != 0 &&
+		ft_strcmp(shell->splitline[0], "env") != 0 &&
+		ft_strcmp(shell->splitline[0], "setenv") != 0 &&
+		ft_strcmp(shell->splitline[0], "unsetenv") != 0 &&
+		ft_strcmp(shell->splitline[0], "exit") != 0 &&
+		/*ft_access(shell) != 0*/)
 		return (0);
 	else
 		return (1);
 }
+
+

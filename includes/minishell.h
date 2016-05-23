@@ -27,13 +27,22 @@
 
 typedef struct		s_shell
 {
+	pid_t			pid;
 	char			**env_cpy;
 	char			**splitline;
+	char			*line;
+	char			**path;
 }					t_shell;
 
-void		ft_swaggy_prompt(void);
-int			ft_isexec(char **line);
 void		ft_parse_env(t_shell *shell, char *env[]);
-void		ft_exec();
+void		ft_init(t_shell *shell);
+void		ft_path(t_shell *shell);
+void		ft_swaggy_prompt(void);
+
+int			ft_isexec(t_shell *shell);
+void		ft_error(t_shell shell);
+void		ft_exec(t_shell shell);
+
+int			ft_access(t_shell shell);
 
 #endif
