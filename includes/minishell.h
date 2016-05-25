@@ -32,12 +32,13 @@ typedef struct		s_shell
 	char			**env_cpy;
 	char			*line;
 	char			**splitline;
-	char			**argline;
+	//char			**argline;
 	char			**path;
+	char			*exec;
 }					t_shell;
 
 void		ft_parse_env(t_shell *shell, char *env[]);
-void		ft_parseline(t_shell *shell);
+//void		ft_parseline(t_shell *shell);
 void		ft_init(t_shell *shell, char **argv, char *env[]);
 void		ft_path(t_shell *shell, char *env[]);
 void		ft_parse_path(t_shell *shell, char *s);
@@ -46,6 +47,7 @@ void		ft_swaggy_prompt(void);
 int			ft_isexec(t_shell *shell, char *s);
 int			ft_access(t_shell *shell, char *s);
 void		ft_error(t_shell shell);
-void		ft_exec(t_shell shell, char *cmd);
+void		ft_exec(t_shell shell, char *cmd, char *env[]);
 
+int			ft_tablen(char **tab);
 #endif

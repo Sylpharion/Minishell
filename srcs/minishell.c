@@ -27,11 +27,12 @@ int			main(int argc, char **argv, char *env[])
 			ft_swaggy_prompt();
 	 	else
 	 	{
-	 		ft_parseline(&shell);
+	 		shell.splitline = ft_strsplit(shell.line, ' ');
+	 		//ft_parseline(&shell);
 	 		if (ft_isexec(&shell, shell.splitline[0]) == 0)
 	 			ft_error(shell);
 	 		else
-	 			ft_exec(shell, shell.splitline[0]);
+	 			ft_exec(shell, shell.splitline[0], env);
 	 		ft_swaggy_prompt();
 	 	}
 	}
@@ -39,30 +40,25 @@ int			main(int argc, char **argv, char *env[])
 	return (0);
 }
 
-/****************************************/
+// void		ft_parseline(t_shell *shell)
+// {
+// 	int		i;
+// 	int		j;
 
-void		ft_parseline(t_shell *shell)
-{
-	int		i;
-	int		j;
-
-	i = 1;
-	j = 0;
-	shell->splitline = ft_strsplit(shell->line, ' ');
-	while (shell->splitline[i])
-		i++;
-	shell->argline = (char **)malloc(sizeof(char *) * i);
-	i = 1;
-	while (shell->splitline[i])
-	{
-		shell->argline[j] = ft_strnew(ft_strlen(shell->splitline[i]));
-		ft_strcpy(shell->argline[j], shell->splitline[i]);
-		ft_putendl(shell->argline[j]);
-		i++;
-	}
-}
-
-/*****************************************/
+// 	i = 1;
+// 	j = 0;
+// 	shell->splitline = ft_strsplit(shell->line, ' ');
+// 	while (shell->splitline[i])
+// 		i++;
+// 	shell->argline = (char **)malloc(sizeof(char *) * i);
+// 	i = 1;
+// 	while (shell->splitline[i])
+// 	{
+// 		shell->argline[j] = ft_strnew(ft_strlen(shell->splitline[i]));
+// 		ft_strcpy(shell->argline[j], shell->splitline[i]);
+// 		i++;
+// 	}
+// }
 
 void		ft_error(t_shell shell)
 {
@@ -70,16 +66,38 @@ void		ft_error(t_shell shell)
 	ft_putendl(shell.splitline[0]);
 }
 
-void		ft_exec(t_shell shell, char *cmd)
+int			ft_tablen(char **tab)
 {
+	int i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
+void		ft_exec(t_shell shell, char *cmd, char *env[])
+{
+	// int j = 0;
+	// char **tab = (char **)malloc(sizeof(char *) * ft_tablen(shell.path)); 
+	// while (shell.path[j])
+	// {
+	// 	tab[j] = ft_strjoin(shell.path[j], shell.splitline[0]);
+	// 	j++;
+	// }
+
+
+
 	shell.pid = fork();
+	//j = 0;
 	if (shell.pid == 0)
 	{
+		execve(shell.exec, shell.splitline, env);
 		// ft_putrainbow("***fake ", PURPLE);
 		// ft_putrainbow(cmd, PURPLE);
 		// ft_putrainbow("***", PURPLE);
 		// ft_putchar('\n');
-		exit(0);
+		//exit(0);
 	}
 	else if (shell.pid > 0)
 		wait(NULL);
@@ -136,6 +154,7 @@ void		ft_init(t_shell *shell, char **argv, char *env[])
 	shell->line = NULL;
 	shell->path = NULL;
 	shell->splitline = NULL;
+	shell->exec = NULL;
 	shell->env_cpy = env;
 }
 
@@ -175,11 +194,11 @@ void		ft_swaggy_prompt(void)
 
 int			ft_isexec(t_shell *shell, char *s)
 {
-	if (ft_strcmp(shell->splitline[0], "cd") != 0 &&
+	if (/*ft_strcmp(shell->splitline[0], "cd") != 0 &&
 		ft_strcmp(shell->splitline[0], "env") != 0 &&
 		ft_strcmp(shell->splitline[0], "setenv") != 0 &&
 		ft_strcmp(shell->splitline[0], "unsetenv") != 0 &&
-		ft_strcmp(shell->splitline[0], "exit") != 0 &&
+		ft_strcmp(shell->splitline[0], "exit") != 0 &&*/
 		ft_access(shell, s) != 0)
 		return (0);
 	else
@@ -198,7 +217,10 @@ int			ft_access(t_shell *shell, char *s)
 	while (shell->path[i])
 	{
 		if (access(ft_strjoin(shell->path[i], s2), F_OK | X_OK) == 0)
+		{
+			shell->exec = ft_strdup(ft_strjoin(shell->path[i], s2));
 			return (0);
+		}
 		i++;
 	}
 	return (-1);
