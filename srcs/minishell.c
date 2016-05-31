@@ -16,9 +16,12 @@ int			main(int argc, char **argv, char *env[])
 {
 	t_shell	shell;
 
-	ft_init(&shell, argv, env);
-	ft_parse_env(&shell, env);
-	ft_path(&shell, env);
+	ft_init(&shell, argv);
+	if (env[0])
+		ft_parse_env(&shell, env);
+	else
+		ft_create_env(&shell);
+	ft_path(&shell, shell.env_cpy);
 	ft_swaggy_prompt();
 	while (42)
 	{
@@ -31,7 +34,7 @@ int			main(int argc, char **argv, char *env[])
 	 		if (ft_isexec(&shell, shell.splitline[0]) == 0)
 	 			ft_error(shell);
 	 		else
-	 			ft_exec(shell, shell.splitline[0], env);
+	 			ft_exec(shell, shell.splitline[0], shell.env_cpy);
 	 		ft_swaggy_prompt();
 	 	}
 	}
@@ -119,7 +122,7 @@ char		**ft_tab_init(void)
 	return (tab);
 }
 
-void		ft_path(t_shell *shell, char *env[])
+void		ft_path(t_shell *shell, char **env)
 {
 	int		i;
 	char	*s;
@@ -155,7 +158,7 @@ void		ft_parse_path(t_shell *shell, char *s)
 	free(s2);
 }
 
-void		ft_init(t_shell *shell, char **argv, char *env[])
+void		ft_init(t_shell *shell, char **argv)
 {
 	shell->line = NULL;
 	shell->path = NULL;
@@ -173,7 +176,7 @@ void		ft_parse_env(t_shell *shell, char *env[])
 	n = 0;
 	 while (env[i])
 		i++;
-	shell->env_cpy = (char **)malloc(sizeof(char*) * i + 1);
+	shell->env_cpy = (char **)malloc(sizeof(char *) * i + 1);
 	n = i;
 	i = 0;
 	while (i < n)
@@ -182,12 +185,29 @@ void		ft_parse_env(t_shell *shell, char *env[])
 			shell->env_cpy[i] = ft_strdup(env[i]);
 		else
 		{
-			shell->env_cpy[i] = ft_strnew(8);
-			ft_strcat(shell->env_cpy[i])
+			shell->env_cpy[i] = ft_strnew(ft_strlen(env[i]));
+			ft_strcat(shell->env_cpy[i], "SHLVL=");
+			ft_strcat(shell->env_cpy[i], ft_itoa(ft_atoi(&env[i][6]) + 1));
 		}
 	 	i++;
 	}
 	shell->env_cpy[i] = NULL;
+}
+
+void		ft_create_env(t_shell *shell)
+{
+	char	*str;
+
+	getcwd(str, 255);
+	shell->env_cpy = (char **)malloc(sizeof(char *) * 8);
+	shell->env_cpy[0] = ft_strdup("HOME=/nfs/2014/s/smassand");
+	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/munki");
+	shell->env_cpy[2] = ft_strdup("LOGNAME=smassand");
+	shell->env_cpy[3] = ft_strdup("SHLVL=1");
+	shell->env_cpy[4] = ft_strdup(ft_strjoin("PWD=", str));
+	shell->env_cpy[5] = ft_strdup(ft_strjoin("OLDPWD=", str));
+	shell->env_cpy[6] = ft_strdup("_=/usr/bin/env");
+	shell->env_cpy[7] = NULL;
 }
 
 void		ft_swaggy_prompt(void)
