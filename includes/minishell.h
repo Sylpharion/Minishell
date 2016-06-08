@@ -29,12 +29,19 @@ typedef struct		s_shell
 {
 	pid_t			pid;
 	struct stat		st;
+	char			*pwd;
 	char			**env_cpy;
 	char			*line;
 	char			**splitline;
 	char			**path;
 	char			*exec;
 }					t_shell;
+
+/* rappel :
+
+unsetenv
+
+*/
 
 typedef 	void (*t_ptr)(t_shell);
 
@@ -59,4 +66,6 @@ void		ft_cd(t_shell shell);
 void		ft_exit(t_shell shell);
 
 int			ft_tablen(char **tab);
+int			ft_builtins(t_shell shell);
+
 #endif

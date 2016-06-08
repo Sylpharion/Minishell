@@ -19,7 +19,9 @@ EXT =		.c
 FLAGS =		
 # -fsanitize=address -Wall -Werror -Wextra
 
-FILE =		minishell
+FILE =		minishell 		ft_env		ft_setenv \
+			ft_unsetenv 	ft_cd		ft_exit	\
+			ft_init 		ft_path		ft_exec
 
 SOURCE = 	srcs/
 
