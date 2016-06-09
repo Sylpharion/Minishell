@@ -44,16 +44,8 @@ int			main(int argc, char **argv, char *env[])
 
 void		ft_error(t_shell shell)
 {
-	if (shell.splitline[0][0] == '/')
-	{
-		ft_putstr("minishell: permission denied: ");
-		ft_putendl(shell.splitline[0]);
-	}
-	else
-	{
-		ft_putstr("minishell: command not found: ");
-		ft_putendl(shell.splitline[0]);
-	}
+	ft_putstr("minishell: command not found: ");
+	ft_putendl(shell.splitline[0]);
 }
 
 int			ft_tablen(char **tab)

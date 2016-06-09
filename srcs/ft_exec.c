@@ -21,19 +21,7 @@ void		ft_exec(t_shell shell, char *cmd, char *env[])
 		return ;
 	if (!fork())
 	{
-		if (ft_strncmp(shell.splitline[0], "./", 2) == 0)
-		{
-			ft_putendl("lol");
-			// str = ft_strjoin(shell.pwd, ft_strsub(shell.splitline[0], 2, ft_strlen(shell.splitline[0]) - 2));
-			// if (execve(str, shell.splitline, shell.env_cpy) == -1)
-			// {
-			// 	ft_putstr("minishell: permission denied: ");
-			// 	ft_putendl(shell.splitline[0]);
-			// 	exit(0);
-			// }
-			exit(0);
-		}
-		else if (execve(shell.exec, shell.splitline, shell.env_cpy) == -1)
+		if (execve(shell.exec, shell.splitline, shell.env_cpy) == -1)
 		{
 			ft_putstr("minishell: permission denied: ");
 			ft_putendl(shell.splitline[0]);
@@ -67,6 +55,17 @@ int			ft_builtins(t_shell shell)
 
 int			ft_isexec(t_shell *shell, char *s)
 {
+	// if (ft_strncmp(shell->splitline[0], "./", 2) == 0)
+	// {
+	// 	if (access(ft_strjoin(shell->pwd, ft_strsub(shell->splitline[0], 2, ft_strlen(shell->splitline[0]) - 2)), F_OK | X_OK) != 0)
+	// 	{
+	// 		shell->exec = shell->splitline[0];
+	// 		return (0);
+	// 	}
+	// 	return (1);
+	// }
+	// else
+	// {
 	if (ft_strcmp(shell->splitline[0], "cd") != 0 &&
 		ft_strcmp(shell->splitline[0], "env") != 0 &&
 		ft_strcmp(shell->splitline[0], "setenv") != 0 &&
@@ -74,8 +73,7 @@ int			ft_isexec(t_shell *shell, char *s)
 		ft_strcmp(shell->splitline[0], "exit") != 0 &&
 		ft_access(shell, s) != 0)
 		return (0);
-	// else if (access(ft_strjoin(shell->pwd, ft_strsub(shell->splitline[0], 2, ft_strlen(shell->splitline[0]) - 2)), F_OK | X_OK) == 0)
-	// 	return (0);		
+	//}
 	else
 		return (1);
 }
