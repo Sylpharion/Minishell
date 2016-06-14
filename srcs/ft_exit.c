@@ -14,5 +14,11 @@
 
 void		ft_exit(t_shell *shell)
 {
-	ft_putrainbow("✗✗✗ fake exit ✗✗✗\n", PURPLE);
+	free(shell->pwd);
+	free(shell->env_cpy);
+	free(shell->line);
+	free(shell->splitline);
+	free(shell->path);
+	if (kill(0, SIGINT) == -1)
+		ft_putendl("Unknow error!");
 }

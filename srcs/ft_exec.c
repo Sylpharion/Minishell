@@ -17,19 +17,21 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[])
 	char	*str;
 
 	str = NULL;
+	ft_verif_path(shell);
 	if (ft_builtins(shell) == 1)
 		return ;
-	if (!fork())
+	shell->pid = fork();
+	if (shell->pid == 0)
 	{
 		if (execve(shell->exec, shell->splitline, shell->env_cpy) == -1)
 		{
 			ft_error(*shell);
-			exit(0);
+			kill(shell->pid, SIGCHLD);
 		}
-		free(shell->exec);
 	}
 	else
 		wait(NULL);
+	free(shell->exec);
 }
 
 int			ft_builtins(t_shell *shell)
@@ -46,11 +48,38 @@ int			ft_builtins(t_shell *shell)
 	if (ptr[i])
 	{
 		(*ptr[i])(shell);
+		free(ptr);
+		free(tab);
 		return (1);
 	}
 	else
+	{
+		free(ptr);
+		free(tab);
 		return (0);
+	}
 }
+
+/* ********************************** */
+
+void		ft_verif_path(t_shell *shell);
+{
+	int		i;
+	int		ok;
+
+	i = 0;
+	ok = 0;
+	while(shell->env_cpy[i])
+	{
+		if (ft_strcmp(ft_cut_arg(shell->env_cpy[i]), "PATH") == 0)
+			kay = 1;
+		i++;
+	}
+	if (kay != 0)
+		ft_add_path(shell);
+}
+
+/* ********************************** */
 
 int			ft_isexec(t_shell *shell, char *s)
 {

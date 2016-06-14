@@ -36,10 +36,12 @@ char		**ft_ft_setenv(t_shell *shell, char **update_env)
 
 	i = 0;
 	verif = 0;
-	update_env = (char **)malloc(sizeof(char *) * ft_tablen(shell->env_cpy) + 10);
+	update_env = (char **)malloc(sizeof(char *) *
+					ft_tablen(shell->env_cpy) + 10);
 	while (shell->env_cpy[i])
 	{
-		if (ft_strcmp(shell->splitline[1], ft_cut_arg(shell->env_cpy[i])) == 0 && verif == 0)
+		if (ft_strcmp(shell->splitline[1], ft_cut_arg(shell->env_cpy[i]))
+						== 0 && verif == 0)
 		{
 			update_env[i] = ft_add_env(shell);	
 			verif = 1;
@@ -64,7 +66,8 @@ char		*ft_add_env(t_shell *shell)
 	str = NULL;
 	if (ft_tablen(shell->splitline) == 3)
 	{
-		str = ft_strnew(ft_strlen(shell->splitline[1]) + ft_strlen(shell->splitline[2]) + 2);
+		str = ft_strnew(ft_strlen(shell->splitline[1]) +
+				ft_strlen(shell->splitline[2]) + 2);
 		ft_strcat(str, shell->splitline[1]);
 		ft_strcat(str, "=");
 		ft_strcat(str, shell->splitline[2]);
