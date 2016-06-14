@@ -34,8 +34,8 @@ int			main(int argc, char **argv, char *env[])
 		 	if (ft_isexec(&shell, shell.splitline[0]) == 0)
 		 		ft_error(shell);
 		 	else
-		 		ft_exec(shell, shell.splitline[0], shell.env_cpy);
-	 		 ft_swaggy_prompt();
+			 	ft_exec(&shell, shell.splitline[0], shell.env_cpy);
+	 		ft_swaggy_prompt();
 	 	}
 	}
 	ft_putchar('\n');
@@ -46,6 +46,9 @@ void		ft_error(t_shell shell)
 {
 	ft_putstr("minishell: command not found: ");
 	ft_putendl(shell.splitline[0]);
+
+	// ft_putstr("minishell: no such file or directory: ");
+	// ft_putendl(shell.splitline[0]);
 }
 
 int			ft_tablen(char **tab)

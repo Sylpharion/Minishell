@@ -16,7 +16,7 @@ CC =		gcc
 
 EXT =		.c
 
-FLAGS =		
+FLAGS =		-g
 # -fsanitize=address -Wall -Werror -Wextra
 
 FILE =		minishell 		ft_env		ft_setenv \

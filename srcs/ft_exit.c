@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void		ft_exit(t_shell shell)
+void		ft_exit(t_shell *shell)
 {
 	ft_putrainbow("✗✗✗ fake exit ✗✗✗\n", PURPLE);
 }

@@ -37,13 +37,11 @@ typedef struct		s_shell
 	char			*exec;
 }					t_shell;
 
-/* rappel :
-
-unsetenv
-
+/*
+	rappel :
 */
 
-typedef 	void (*t_ptr)(t_shell);
+typedef 	void (*t_ptr)(t_shell *);
 
 void		ft_parse_env(t_shell *shell, char *env[]);
 void		ft_create_env(t_shell *shell);
@@ -57,15 +55,25 @@ void		ft_swaggy_prompt(void);
 int			ft_isexec(t_shell *shell, char *s);
 int			ft_access(t_shell *shell, char *s);
 void		ft_error(t_shell shell);
-void		ft_exec(t_shell shell, char *cmd, char *env[]);
+void		ft_exec(t_shell *shell, char *cmd, char *env[]);
 
-void		ft_env(t_shell shell);
-void		ft_setenv(t_shell shell);
-void		ft_unsetenv(t_shell shell);
-void		ft_cd(t_shell shell);
-void		ft_exit(t_shell shell);
+/*	builtins  */
+
+int			ft_builtins(t_shell *shell);
+void		ft_env(t_shell *shell);
+void		ft_setenv(t_shell *shell);
+void		ft_unsetenv(t_shell *shell);
+void		ft_cd(t_shell *shell);
+void		ft_exit(t_shell *shell);
+void		ft_printenv(t_shell *shell);
+
+/* autres */
 
 int			ft_tablen(char **tab);
-int			ft_builtins(t_shell shell);
+int			ft_verif_unset(t_shell *shell, char *arg);
+char		*ft_cut_arg(char *arg);
+char		*ft_add_env(t_shell *shell);
+char		**ft_ft_setenv(t_shell *shell, char **update_env);
 
 #endif
+

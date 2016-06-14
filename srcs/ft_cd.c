@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void		ft_cd(t_shell shell)
+void		ft_cd(t_shell *shell)
 {
 	ft_putrainbow("✗✗✗ fake cd ✗✗✗\n", PURPLE);
 }
