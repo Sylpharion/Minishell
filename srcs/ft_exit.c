@@ -20,5 +20,5 @@ void		ft_exit(t_shell *shell)
 	free(shell->splitline);
 	free(shell->path);
 	if (kill(0, SIGINT) == -1)
-		ft_putendl("Unknow error!");
+		ft_putendl("minishell: unknow error!");
 }

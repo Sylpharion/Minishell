@@ -74,7 +74,6 @@ int			ft_verif_unset(t_shell *shell, char *arg);
 char		*ft_cut_arg(char *arg);
 char		*ft_add_env(t_shell *shell);
 char		**ft_ft_setenv(t_shell *shell, char **update_env);
-void		ft_verif_path(t_shell *shell);
 
 #endif
 

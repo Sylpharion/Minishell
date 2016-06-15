@@ -37,27 +37,29 @@ int			main(int argc, char **argv, char *env[])
 			 	ft_exec(&shell, shell.splitline[0], shell.env_cpy);
 	 		ft_swaggy_prompt();
 	 	}
+	 	if (shell.line)
+	 		free(shell.line);
 	}
 	return (0);
 }
 
 void		ft_error(t_shell shell)
 {
-	if (stat(shell.exec, &shell.st) == -1)
-	{
-		ft_putstr("minishell: no such file or directory: ");
-		ft_putendl(shell.splitline[0]);
-	}
-	else if (access(shell.exec, F_OK) == 0 && access(shell.exec, X_OK) == -1)
-	{
-		ft_putstr("minishell: permission denied: ");
-		ft_putendl(shell.splitline[0]);
-	}
-	else
-	{
+	// if (stat(shell.exec, &shell.st) == -1)
+	// {
+	// 	ft_putstr("minishell: no such file or directory: ");
+	// 	ft_putendl(s);
+	// }
+	// else if (access(shell.exec, F_OK) == 0 && access(shell.exec, X_OK) == -1)
+	// {
+	// 	ft_putstr("minishell: permission denied: ");
+	// 	ft_putendl(s);
+	// }
+	// else
+	// {
 		ft_putstr("minishell: command not found: ");
 		ft_putendl(shell.splitline[0]);
-	}
+	//}
 }
 
 int			ft_tablen(char **tab)

@@ -15,24 +15,24 @@
 int			calcword(const char *s, char c)
 {
 	int		i;
-	int		word;
+	int		s2;
 
 	i = 0;
-	word = 0;
+	s2 = 0;
 	while (s[i])
 	{
 		if ((s[i] != c && i == 0) || (s[i - 1] == c && s[i] != c))
-			word++;
+			s2++;
 		i++;
 	}
-	return (word);
+	return (s2);
 }
 
 char		**malloctab(char const *s, int c)
 {
 	int		numword;
 
-	if (s)
+	if (s != NULL)
 	{
 		numword = calcword(s, c);
 		return ((char **)ft_memalloc(sizeof(char *) * (numword + 1)));

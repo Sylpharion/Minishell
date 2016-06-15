@@ -66,7 +66,8 @@ void		ft_create_env(t_shell *shell)
 	shell->pwd = ft_strdup(ft_strjoin(str, "/"));
 	shell->env_cpy = (char **)malloc(sizeof(char *) * 7);
 	shell->env_cpy[0] = ft_strdup("HOME=/nfs/2014/s/smassand");
-	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/munki");
+	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/\
+									sbin:/usr/local/bin:/usr/local/munki");
 	shell->env_cpy[2] = ft_strdup("SHLVL=1");
 	shell->env_cpy[3] = ft_strdup(ft_strjoin("PWD=", str));
 	shell->env_cpy[4] = ft_strdup(ft_strjoin("OLDPWD=", str));

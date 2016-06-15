@@ -17,7 +17,6 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[])
 	char	*str;
 
 	str = NULL;
-	ft_verif_path(shell);
 	if (ft_builtins(shell) == 1)
 		return ;
 	shell->pid = fork();
@@ -60,30 +59,14 @@ int			ft_builtins(t_shell *shell)
 	}
 }
 
-/* ********************************** */
-
-void		ft_verif_path(t_shell *shell);
-{
-	int		i;
-	int		ok;
-
-	i = 0;
-	ok = 0;
-	while(shell->env_cpy[i])
-	{
-		if (ft_strcmp(ft_cut_arg(shell->env_cpy[i]), "PATH") == 0)
-			kay = 1;
-		i++;
-	}
-	if (kay != 0)
-		ft_add_path(shell);
-}
-
-/* ********************************** */
-
 int			ft_isexec(t_shell *shell, char *s)
 {
-	if (ft_strcmp(shell->splitline[0], "cd") != 0 &&
+	if (access(shell->splitline[0], F_OK | X_OK) == 0)
+	{
+		shell->exec = ft_strdup(shell->splitline[0]);
+		return (1);
+	}
+	else if (ft_strcmp(shell->splitline[0], "cd") != 0 &&
 		ft_strcmp(shell->splitline[0], "env") != 0 &&
 		ft_strcmp(shell->splitline[0], "setenv") != 0 &&
 		ft_strcmp(shell->splitline[0], "unsetenv") != 0 &&

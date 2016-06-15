@@ -14,5 +14,8 @@
 
 void		ft_cd(t_shell *shell)
 {
-	ft_putrainbow("✗✗✗ fake cd ✗✗✗\n", PURPLE);
+	//ft_putrainbow("✗✗✗ fake cd ✗✗✗\n", PURPLE);
+	int 	i;
+
+	i = 0;
 }

@@ -15,13 +15,29 @@
 void		ft_path(t_shell *shell, char **env)
 {
 	int		i;
+	int		ok;
 	char	*s;
 
 	i = 0;
-	while (strncmp(env[i], "PATH", 4) != 0)
+	ok = 0;
+
+	while (env[i])
+	{
+		if (strncmp(env[i], "PATH", 4) == 0)
+		{
+			ok = 1;
+			break ;
+		}
 		i++;
-	s = ft_strnew(ft_strlen(env[i]) + 1);
-	ft_strcpy(s, env[i]);
+	}
+	if (ok == 1)
+	{
+		s = ft_strnew(ft_strlen(env[i]) + 1);
+		ft_strcpy(s, env[i]);
+	}
+	else
+		s = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/\
+						usr/local/bin:/usr/local/munki");
 	ft_parse_path(shell, s);
 }
 

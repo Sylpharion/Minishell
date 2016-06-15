@@ -41,7 +41,9 @@ t_ptr		*ft_ptr_init(void)
 char		**ft_tab_init(void)
 {
 	char	**tab;
+	int		i;
 
+	i = 0;
 	tab = (char **)malloc(sizeof(char *) * 7);
 	tab[0] = ft_strdup("env");
 	tab[1] = ft_strdup("setenv");
