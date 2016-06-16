@@ -16,6 +16,7 @@ int			main(int argc, char **argv, char *env[])
 {
 	t_shell	shell;
 
+
 	ft_init(&shell, argv);
 	if (env[0])
 		ft_parse_env(&shell, env);
@@ -23,9 +24,9 @@ int			main(int argc, char **argv, char *env[])
 		ft_create_env(&shell);
 	ft_path(&shell, shell.env_cpy);
 	ft_swaggy_prompt();
-	while (42)
+	 while (42)
 	{
-		get_next_line(0, &shell.line);
+		shell.line = ft_get_the_line();
 		shell.splitline = ft_strsplit(ft_strtrim(shell.line), ' ');
 		if (!shell.splitline[0])
 			ft_swaggy_prompt();
@@ -37,10 +38,20 @@ int			main(int argc, char **argv, char *env[])
 			 	ft_exec(&shell, shell.splitline[0], shell.env_cpy);
 	 		ft_swaggy_prompt();
 	 	}
-	 	if (shell.line)
-	 		free(shell.line);
+	 	free(shell.line);
 	}
 	return (0);
+}
+
+char		*ft_get_the_line(void)
+{
+	char	*str;
+	int		ret;
+
+	str = ft_strnew(BOEUF_SIZE + 1);
+	str[BOEUF_SIZE] = 0;
+	ret = read(0, str, BOEUF_SIZE);
+	return (str);
 }
 
 void		ft_error(t_shell shell)

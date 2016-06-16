@@ -21,6 +21,7 @@ void		ft_init(t_shell *shell, char **argv)
 	shell->exec = NULL;
 	shell->env_cpy = NULL;
 	shell->pwd = NULL;
+	shell->home = ft_strdup("/nfs/2014/s/smassand");
 }
 
 t_ptr		*ft_ptr_init(void)

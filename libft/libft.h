@@ -20,7 +20,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-# define BOEUF_SIZE 1024
+# define BOEUF_SIZE 2048
 
 # define CANCEL		"\033[0m"
 # define BLACK		"\033[0;30m"
@@ -99,6 +99,7 @@ int					ft_isascii(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_isspace(int c);
+
 int					get_next_line(int const fd, char **line);
 
 #endif

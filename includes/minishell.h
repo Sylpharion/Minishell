@@ -30,6 +30,7 @@ typedef struct		s_shell
 	pid_t			pid;
 	struct stat		st;
 	char			*pwd;
+	char			*home;
 	char			**env_cpy;
 	char			*line;
 	char			**splitline;
@@ -62,18 +63,21 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[]);
 int			ft_builtins(t_shell *shell);
 void		ft_env(t_shell *shell);
 void		ft_setenv(t_shell *shell);
+char		**ft_ft_setenv(t_shell *shell, char **update_env);
 void		ft_unsetenv(t_shell *shell);
+int			ft_verif_unset(t_shell *shell, char *arg);
 void		ft_cd(t_shell *shell);
+int			ft_verif_cd(t_shell *shell);
 void		ft_exit(t_shell *shell);
 void		ft_printenv(t_shell *shell);
 
 /* autres */
 
 int			ft_tablen(char **tab);
-int			ft_verif_unset(t_shell *shell, char *arg);
 char		*ft_cut_arg(char *arg);
 char		*ft_add_env(t_shell *shell);
-char		**ft_ft_setenv(t_shell *shell, char **update_env);
+char		*ft_get_the_line(void);
+
 
 #endif
 

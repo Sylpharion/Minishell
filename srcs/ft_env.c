@@ -63,7 +63,7 @@ void		ft_create_env(t_shell *shell)
 
 	str = ft_strnew(100);
 	getcwd(str, 100);
-	shell->pwd = ft_strdup(ft_strjoin(str, "/"));
+	shell->pwd = ft_strdup(str);
 	shell->env_cpy = (char **)malloc(sizeof(char *) * 7);
 	shell->env_cpy[0] = ft_strdup("HOME=/nfs/2014/s/smassand");
 	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/\
