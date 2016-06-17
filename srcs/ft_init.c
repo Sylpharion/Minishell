@@ -12,19 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void		ft_init(t_shell *shell, char **argv)
-{
-	shell->pid = 0;
-	shell->line = NULL;
-	shell->path = NULL;
-	shell->splitline = NULL;
-	shell->exec = NULL;
-	shell->env_cpy = NULL;
-	shell->pwd = NULL;
-	shell->home = ft_strdup("/nfs/2014/s/smassand");
-}
-
-t_ptr		*ft_ptr_init(void)
+static t_ptr		*ft_ptr_init(void)
 {
 	t_ptr	*ptr;
 
@@ -39,7 +27,7 @@ t_ptr		*ft_ptr_init(void)
 	return (ptr);
 }
 
-char		**ft_tab_init(void)
+static char		**ft_tab_init(void)
 {
 	char	**tab;
 	int		i;
@@ -55,3 +43,29 @@ char		**ft_tab_init(void)
 	tab[6] = NULL;
 	return (tab);
 }
+
+void		ft_init(t_shell *shell, char **argv)
+{
+	shell->pid = 0;
+	shell->line = NULL;
+	shell->path = NULL;
+	shell->splitline = NULL;
+	shell->exec = NULL;
+	shell->env_cpy = NULL;
+	shell->pwd = NULL;
+	shell->home = ft_strdup("/nfs/2014/s/smassand");
+	shell->ptr = ft_ptr_init();
+	shell->tab = ft_tab_init();
+}
+
+/* init = 1 fois au debut du prog
+	free (tab) != free d'un tableau
+	while (tab[i])
+		free(tab[i]);
+	free(tab);
+
+	important : free de supprime pas les donnee de tes variables
+	free libere la memoire mais supprime pas le contenue
+	exemple :
+		malloc("coucou\n"); => on as allouer 7 octect ou tu as ecris coucou
+		free(la variable de coucou); => liberation de la memoire mais pas le contenu */

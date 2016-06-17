@@ -25,6 +25,9 @@
 # include <sys/time.h>
 # include <sys/resource.h>
 
+typedef 	struct s_shell t_shell;
+typedef 	void (*t_ptr)(t_shell *);
+
 typedef struct		s_shell
 {
 	pid_t			pid;
@@ -36,19 +39,22 @@ typedef struct		s_shell
 	char			**splitline;
 	char			**path;
 	char			*exec;
+	char			**tab;
+	t_ptr			*ptr;
+
 }					t_shell;
 
 /*
 	rappel :
 */
 
-typedef 	void (*t_ptr)(t_shell *);
+//typedef 	void (*t_ptr)(t_shell *);
 
 void		ft_parse_env(t_shell *shell, char *env[]);
 void		ft_create_env(t_shell *shell);
 void		ft_init(t_shell *shell, char **argv);
-t_ptr		*ft_ptr_init(void);
-char		**ft_tab_init(void);
+//t_ptr		*ft_ptr_init(void);
+//char		**ft_tab_init(void);
 void		ft_path(t_shell *shell, char **env);
 void		ft_parse_path(t_shell *shell, char *s);
 void		ft_swaggy_prompt(void);

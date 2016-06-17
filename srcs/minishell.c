@@ -16,7 +16,7 @@ int			main(int argc, char **argv, char *env[])
 {
 	t_shell	shell;
 
-
+// leaks sur strtrim  et split 
 	ft_init(&shell, argv);
 	if (env[0])
 		ft_parse_env(&shell, env);

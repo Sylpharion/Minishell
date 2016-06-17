@@ -34,6 +34,7 @@ void		ft_parse_env(t_shell *shell, char *env[])
 {
 	int		i;
 	int		n;
+	char *tmp;
 
 	i = 0;
 	n = 0;
@@ -48,8 +49,11 @@ void		ft_parse_env(t_shell *shell, char *env[])
 			shell->env_cpy[i] = ft_strdup(env[i]);
 		else
 		{
+			// leaks sur itoa 
 			shell->env_cpy[i] = ft_strnew(ft_strlen(env[i]));
 			ft_strcat(shell->env_cpy[i], "SHLVL=");
+			tmp = ft_itoa(ft_atoi(&env[i][6]) + 1);
+			ft_putendl(tmp);
 			ft_strcat(shell->env_cpy[i], ft_itoa(ft_atoi(&env[i][6]) + 1));
 		}
 	 	i++;
@@ -59,18 +63,17 @@ void		ft_parse_env(t_shell *shell, char *env[])
 
 void		ft_create_env(t_shell *shell)
 {
-	char	*str;
+	//char	*str;
 
-	str = ft_strnew(100);
-	getcwd(str, 100);
-	shell->pwd = ft_strdup(str);
+//	str = ft_strnew(100);
+//	getcwd(str, 100);
+	shell->pwd = getcwd(NULL, 0);
 	shell->env_cpy = (char **)malloc(sizeof(char *) * 7);
 	shell->env_cpy[0] = ft_strdup("HOME=/nfs/2014/s/smassand");
-	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/\
-									sbin:/usr/local/bin:/usr/local/munki");
+	shell->env_cpy[1] = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/munki");
 	shell->env_cpy[2] = ft_strdup("SHLVL=1");
-	shell->env_cpy[3] = ft_strdup(ft_strjoin("PWD=", str));
-	shell->env_cpy[4] = ft_strdup(ft_strjoin("OLDPWD=", str));
+	shell->env_cpy[3] = ft_strdup(ft_strjoin("PWD=", shell->pwd));
+	shell->env_cpy[4] = ft_strdup(ft_strjoin("OLDPWD=", shell->pwd));
 	shell->env_cpy[5] = ft_strdup("_=/usr/bin/env");
 	shell->env_cpy[6] = NULL;
 }

@@ -35,28 +35,18 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[])
 
 int			ft_builtins(t_shell *shell)
 {
-	t_ptr	*ptr;
-	char	**tab;
 	int		i;
 
 	i = 0;
-	ptr = ft_ptr_init();
-	tab = ft_tab_init();
-	while (ft_strcmp(shell->splitline[0], tab[i]) != 0)
+	while (ft_strcmp(shell->splitline[0], shell->tab[i]) != 0)
 		i++;
-	if (ptr[i])
+	if (shell->ptr[i])
 	{
-		(*ptr[i])(shell);
-		free(ptr);
-		free(tab);
+		(*shell->ptr[i])(shell);
 		return (1);
 	}
 	else
-	{
-		free(ptr);
-		free(tab);
 		return (0);
-	}
 }
 
 int			ft_isexec(t_shell *shell, char *s)
@@ -80,8 +70,9 @@ int			ft_isexec(t_shell *shell, char *s)
 int			ft_access(t_shell *shell, char *s)
 {
 	char	*s2;
+	char 	*tmp;
 	int		i;
-	
+
 	if (ft_strncmp(shell->splitline[0], "./", 2) == 0)
 	{
 		shell->exec = ft_strdup(shell->splitline[0]);
@@ -93,11 +84,15 @@ int			ft_access(t_shell *shell, char *s)
 	ft_strcat(s2, s);
 	while (shell->path[i])
 	{
-		if (access(ft_strjoin(shell->path[i], s2), F_OK | X_OK) == 0)
+		tmp = ft_strjoin(shell->path[i], s2);
+		if (access(tmp, F_OK | X_OK) == 0)
 		{
-			shell->exec = ft_strdup(ft_strjoin(shell->path[i], s2));
+			shell->exec = ft_strdup(tmp);
+			free(s2);
+			free(tmp);
 			return (0);
 		}
+		free(tmp);
 		i++;
 	}
 	free(s2);
