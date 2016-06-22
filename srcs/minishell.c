@@ -15,8 +15,7 @@
 int			main(int argc, char **argv, char *env[])
 {
 	t_shell	shell;
-
-// leaks sur strtrim  et split 
+	
 	ft_init(&shell, argv);
 	if (env[0])
 		ft_parse_env(&shell, env);
@@ -24,23 +23,30 @@ int			main(int argc, char **argv, char *env[])
 		ft_create_env(&shell);
 	ft_path(&shell, shell.env_cpy);
 	ft_swaggy_prompt();
-	 while (42)
+	ft_loop(&shell);
+	return (0);
+}
+
+void		ft_loop(t_shell	*shell)
+{
+	while (42)
 	{
-		shell.line = ft_get_the_line();
-		shell.splitline = ft_strsplit(ft_strtrim(shell.line), ' ');
-		if (!shell.splitline[0])
+		shell->line = ft_get_the_line();
+		shell->trimline = ft_strtrim(shell->line);
+		shell->splitline = ft_strsplit(shell->trimline, ' ');
+		if (!shell->splitline[0])
 			ft_swaggy_prompt();
 	 	else
 	 	{
-		 	if (ft_isexec(&shell, shell.splitline[0]) == 0)
-		 		ft_error(shell);
+		 	if (ft_isexec(shell, shell->splitline[0]) == 0)
+		 		ft_error(*shell);
 		 	else
-			 	ft_exec(&shell, shell.splitline[0], shell.env_cpy);
+			 	ft_exec(shell, shell->splitline[0], shell->env_cpy);
 	 		ft_swaggy_prompt();
 	 	}
-	 	free(shell.line);
+	 	free(shell->trimline);
+	 	free(shell->line);
 	}
-	return (0);
 }
 
 char		*ft_get_the_line(void)

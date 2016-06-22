@@ -37,7 +37,7 @@ void		ft_path(t_shell *shell, char **env)
 	}
 	else
 		s = ft_strdup("PATH=/usr/bin:/bin:/usr/sbin:/sbin:/\
-						usr/local/bin:/usr/local/munki");
+usr/local/bin:/usr/local/munki");
 	ft_parse_path(shell, s);
 }
 

@@ -25,7 +25,7 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[])
 		if (execve(shell->exec, shell->splitline, shell->env_cpy) == -1)
 		{
 			ft_error(*shell);
-			kill(shell->pid, SIGCHLD);
+			exit(0);
 		}
 	}
 	else

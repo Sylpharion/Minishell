@@ -21,7 +21,8 @@ FLAGS =		-g
 
 FILE =		minishell 		ft_env		ft_setenv \
 			ft_unsetenv 	ft_cd		ft_exit	\
-			ft_init 		ft_path		ft_exec
+			ft_init 		ft_path		ft_exec \
+			ft_echo
 
 SOURCE = 	srcs/
 

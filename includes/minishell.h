@@ -32,33 +32,44 @@ typedef struct		s_shell
 {
 	pid_t			pid;
 	struct stat		st;
-	char			*pwd;
-	char			*home;
 	char			**env_cpy;
 	char			*line;
+	char			*trimline;
 	char			**splitline;
-	char			**path;
-	char			*exec;
 	char			**tab;
 	t_ptr			*ptr;
-
+	char			*pwd;
+	char			*home;
+	char			**path;
+	char			*exec;
 }					t_shell;
 
 /*
 	rappel :
-*/
 
-//typedef 	void (*t_ptr)(t_shell *);
+	init = 1 fois au debut du prog
+	free (tab) != free d'un tableau
+
+	while (tab[i])
+		free(tab[i]);
+	free(tab);
+
+	important : free de supprime pas les donnee de tes variables
+	free libere la memoire mais supprime pas le contenue
+
+	exemple :
+		malloc("coucou\n"); => on as allouer 7 octect ou tu as ecris coucou
+		free(la variable de coucou); => liberation de la memoire mais pas le contenu 
+*/
 
 void		ft_parse_env(t_shell *shell, char *env[]);
 void		ft_create_env(t_shell *shell);
 void		ft_init(t_shell *shell, char **argv);
-//t_ptr		*ft_ptr_init(void);
-//char		**ft_tab_init(void);
 void		ft_path(t_shell *shell, char **env);
 void		ft_parse_path(t_shell *shell, char *s);
 void		ft_swaggy_prompt(void);
 
+void		ft_loop(t_shell	*shell);
 int			ft_isexec(t_shell *shell, char *s);
 int			ft_access(t_shell *shell, char *s);
 void		ft_error(t_shell shell);
@@ -69,13 +80,19 @@ void		ft_exec(t_shell *shell, char *cmd, char *env[]);
 int			ft_builtins(t_shell *shell);
 void		ft_env(t_shell *shell);
 void		ft_setenv(t_shell *shell);
-char		**ft_ft_setenv(t_shell *shell, char **update_env);
+char		**ft_update_setenv(t_shell *shell);
+void		ft_free_setenv(t_shell *shell, char  **update_env);
 void		ft_unsetenv(t_shell *shell);
 int			ft_verif_unset(t_shell *shell, char *arg);
 void		ft_cd(t_shell *shell);
 int			ft_verif_cd(t_shell *shell);
 void		ft_exit(t_shell *shell);
 void		ft_printenv(t_shell *shell);
+void		ft_echo(t_shell *shell);
+void		ft_echo_var(char **env, char *str);
+void		ft_print_var(char **env, char *str);
+void		ft_echo_quote(char *str);
+void		ft_echo_brut(char *str);
 
 /* autres */
 
@@ -83,7 +100,8 @@ int			ft_tablen(char **tab);
 char		*ft_cut_arg(char *arg);
 char		*ft_add_env(t_shell *shell);
 char		*ft_get_the_line(void);
-
+void		ft_free_tab(char **tab);
+void		ft_print_arg(char *s);
 
 #endif
 

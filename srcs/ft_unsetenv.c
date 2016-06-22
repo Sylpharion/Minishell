@@ -37,7 +37,7 @@ void		ft_unsetenv(t_shell *shell)
 		i++;
 	}
 	update_env[j] = NULL;
-	free(shell->env_cpy);
+	ft_free_tab(shell->env_cpy);
 	shell->env_cpy = update_env;
 }
 
@@ -47,6 +47,7 @@ int			ft_verif_unset(t_shell *shell, char *arg)
 	int		j;
 
 	i = 1;
+	j = 0;
 	while (shell->splitline[i])
 	{
 		if (ft_strcmp(shell->splitline[i], ft_cut_arg(arg)) == 0)
@@ -69,4 +70,17 @@ char		*ft_cut_arg(char *arg)
 		i++;
 	}
 	return (ft_strdup(res));
+}
+
+void		ft_free_tab(char **tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
