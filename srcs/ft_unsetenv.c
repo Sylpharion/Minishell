@@ -18,20 +18,24 @@ void		ft_unsetenv(t_shell *shell)
 	int		i;
 	int		j;
 
+	i = ft_tablen(shell->env_cpy);
+	j = 0;
 	if (!shell->splitline[1])
 	{
 		ft_putendl("unsetenv: Too few arguments.");
 		return ;
 	}
-	i = ft_tablen(shell->env_cpy);
-	update_env = (char **)malloc(sizeof(char *) * i + 1);
+	if (ft_is_unset(shell) == 0)
+		return ;
+	update_env = (char **)malloc(sizeof(char *) * i);
 	i = 0;
-	j = 0;
 	while (shell->env_cpy[i])
 	{
 		if (ft_verif_unset(shell, shell->env_cpy[i]) == 1)
 		{
 			update_env[j] = ft_strdup(shell->env_cpy[i]);
+			ft_putendl(shell->env_cpy[i]);
+			ft_putendl(update_env[j]);
 			j++;
 		}
 		i++;
@@ -41,19 +45,37 @@ void		ft_unsetenv(t_shell *shell)
 	shell->env_cpy = update_env;
 }
 
+int			ft_is_unset(t_shell *shell)
+{
+	int		i;
+
+	i = 0;
+	while (shell->env_cpy[i])
+	{
+		if (ft_verif_unset(shell, shell->env_cpy[i]) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int			ft_verif_unset(t_shell *shell, char *arg)
 {
 	int		i;
-	int		j;
+	char	*tmp;
 
 	i = 1;
-	j = 0;
+	tmp = ft_cut_arg(arg);
 	while (shell->splitline[i])
 	{
-		if (ft_strcmp(shell->splitline[i], ft_cut_arg(arg)) == 0)
+		if (ft_strcmp(shell->splitline[i], tmp) == 0)
+		{
+			free(tmp);
 			return (0);
+		}
 		i++;
 	}
+	free(tmp);
 	return (1);
 }
 
@@ -63,13 +85,16 @@ char		*ft_cut_arg(char *arg)
 	char	*res;
 	
 	i = 0;
-	res = ft_strnew(ft_strlen(arg));
+	while (arg[i] != '=')
+		i++;
+	res = ft_strnew(i);
+	i = 0;
 	while (arg[i] != '=')
 	{
 		res[i] = arg[i];
 		i++;
 	}
-	return (ft_strdup(res));
+	return (res);
 }
 
 void		ft_free_tab(char **tab)
@@ -79,7 +104,8 @@ void		ft_free_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		free(tab[i]);
+		if (tab[i])
+			free(tab[i]);
 		i++;
 	}
 	free(tab);

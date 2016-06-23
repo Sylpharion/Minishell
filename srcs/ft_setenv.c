@@ -33,12 +33,16 @@ void		ft_free_setenv(t_shell *shell, char **update_env)
 	int		i;
 
 	i = 0;
-	ft_free_tab(shell->env_cpy);
-	shell->env_cpy = update_env;
+	if (ft_tablen(update_env) > 0)
+	{
+		ft_free_tab(shell->env_cpy);
+		shell->env_cpy = update_env;
+	}
 	while (shell->env_cpy[i])
 	{
-		if (ft_strcmp(shell->splitline[1], ft_cut_arg(shell->env_cpy[i])) == 0)
+		if (ft_strcmp("PATH", ft_cut_arg(shell->env_cpy[i])) == 0)
 		{
+			ft_free_tab(shell->path);
 			ft_path(shell, shell->env_cpy);
 			return ;
 		}
@@ -77,8 +81,12 @@ char		**ft_update_setenv(t_shell *shell)
 			verif = 0;
 		i++;
 	}
+
 	if (verif == 1)
+	{
+		update_env = shell->env_cpy;
 		return (shell->env_cpy);
+	}
 	else
 	{
 		update_env = (char **)malloc(sizeof(char *) *
@@ -92,6 +100,7 @@ char		**ft_update_setenv(t_shell *shell)
 		update_env[i] = ft_add_env(shell);
 		update_env[i + 1] = NULL;
 	}
+
 	/* 
 
 	while (shell->env_cpy[i])
@@ -118,6 +127,7 @@ char		**ft_update_setenv(t_shell *shell)
 char		*ft_add_env(t_shell *shell)
 {
 	char	*str;
+	char	*str2;
 
 	str = NULL;
 	if (ft_tablen(shell->splitline) == 3)
@@ -133,5 +143,7 @@ char		*ft_add_env(t_shell *shell)
 		str = ft_strnew(ft_strlen(shell->splitline[1]) + 2);
 		str = ft_strjoin(shell->splitline[1], "=");
 	}
-	return (str);
+	str2 = ft_strdup(str);
+	free(str);
+	return (str2);
 }

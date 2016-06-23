@@ -14,10 +14,10 @@
 
 void		ft_exit(t_shell *shell)
 {
-	free(shell->pwd);
-	free(shell->env_cpy);
-	free(shell->line);
-	free(shell->splitline);
-	free(shell->path);
+	// free(shell->pwd);
+	// free(shell->env_cpy);
+	// free(shell->line);
+	// free(shell->splitline);
+	// free(shell->path);
 	exit(0);
 }

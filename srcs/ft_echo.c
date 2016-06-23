@@ -19,16 +19,13 @@ void		ft_echo(t_shell *shell)
 	i = 1;
 	if (ft_tablen(shell->splitline) != 1)
 	{
-		if (shell->splitline[i][0] == '"' && 
-			shell->splitline[i][ft_strlen(shell->splitline[i]) - 1] == '"')
-			ft_putendl("looool");
 		while (shell->splitline[i])
 		{
 			if (shell->splitline[i][0] == '$')
 				ft_echo_var(shell->env_cpy, shell->splitline[i]);
-			// else if (shell->splitline[i][0] == '"' && 
-			// 	shell->splitline[i][ft_strlen(shell->splitline[i]) - 1] == '"')
-			// 	ft_echo_quote(shell->splitline[i]);
+			else if (shell->splitline[i][0] == '"' && 
+				shell->splitline[i][ft_strlen(shell->splitline[i]) - 1] == '"')
+				ft_echo_quote(shell->splitline[i]);
 			else
 				ft_echo_brut(shell->splitline[i]);
 			i++;

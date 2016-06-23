@@ -84,6 +84,7 @@ char		**ft_update_setenv(t_shell *shell);
 void		ft_free_setenv(t_shell *shell, char  **update_env);
 void		ft_unsetenv(t_shell *shell);
 int			ft_verif_unset(t_shell *shell, char *arg);
+int			ft_is_unset(t_shell *shell);
 void		ft_cd(t_shell *shell);
 int			ft_verif_cd(t_shell *shell);
 void		ft_exit(t_shell *shell);

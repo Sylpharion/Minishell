@@ -46,6 +46,7 @@ void		ft_loop(t_shell	*shell)
 	 	}
 	 	free(shell->trimline);
 	 	free(shell->line);
+	 	ft_free_tab(shell->splitline);
 	}
 }
 
