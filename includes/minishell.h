@@ -93,6 +93,10 @@ void		ft_delete(t_shell *shell);
 void		ft_cd(t_shell *shell);
 void		ft_verif_cd(t_shell *shell);
 void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd);
+void		ft_go_home(t_shell *shell);
+void		ft_new_oldpwd(t_shell *shell, char *path);
+void		ft_cd_home_error(t_shell *shell, char *path);
+void		ft_cd_home_error_sup(t_shell *shell, char *path);
 
 
 void		ft_exit(t_shell *shell);

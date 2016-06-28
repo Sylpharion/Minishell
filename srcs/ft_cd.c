@@ -14,9 +14,102 @@
 
 void		ft_cd(t_shell *shell)
 {
-	// if (!shell->splitline[1])
-	// 	chdir(shell->home);
 	ft_verif_cd(shell);
+	if (!shell->splitline[1])
+		ft_go_home(shell);
+
+}
+
+void		ft_go_home(t_shell *shell)
+{
+	if (chdir(shell->home) == -1)
+		ft_cd_home_error(shell, shell->home);
+	else
+		ft_new_oldpwd(shell, shell->home);
+}
+
+void		ft_new_oldpwd(t_shell *shell, char *path)
+{
+	int		i;
+	char	**update_env;
+	char	*tmp;
+	char	*pwd;
+
+	i = 0;
+	update_env = (char **)malloc(sizeof(char *) * ft_tablen(shell->env_cpy) + 10);
+	while(shell->env_cpy[i])
+	{
+		tmp = ft_cut_arg(shell->env_cpy[i]);
+		if (ft_strcmp(tmp, "PWD") == 0)
+		{
+			pwd = ft_strdup(shell->env_cpy[i]);
+			free(tmp);
+			break ;
+		}
+		free(tmp);
+		i++;
+	}
+	i = 0;
+	while(shell->env_cpy[i])
+	{
+		tmp = ft_cut_arg(shell->env_cpy[i]);
+		if (ft_strcmp(tmp, "PWD") == 0)
+		{
+			free(shell->env_cpy[i]);
+			shell->env_cpy[i] = getcwd(NULL, 0);
+		}
+		else if (ft_strcmp(tmp, "OLDPWD") == 0)
+		{
+			free(shell->env_cpy[i]);
+			shell->env_cpy[i] = pwd;
+		}
+		// else
+		// {
+		// 	update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
+		// 	ft_strcpy(update_env[i], shell->env_cpy[i]);
+		// }
+		free(tmp);
+		i++;
+	}
+	// update_env[i] = NULL;
+	// ft_free_tab(shell->env_cpy);
+	// shell->env_cpy = update_env;
+}
+
+void		ft_cd_home_error(t_shell *shell, char *path)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (shell->env_cpy[i])
+	{
+		tmp = ft_cut_arg(shell->env_cpy[i]);
+		if (ft_strcmp(tmp, "HOME") == 0)
+		{
+			free(tmp);
+			ft_cd_home_error_sup(shell, path);
+			return ;
+		}
+		free(tmp);
+		i++;
+	}
+	ft_putendl("cd: No home directory.");
+}
+
+void		ft_cd_home_error_sup(t_shell *shell, char *path)
+{
+	struct	stat st;
+	if (lstat(path, &st) == 0)
+	{
+		if (S_ISDIR(st.st_mode) != 1)
+			ft_putstr("cd: not a directory: ");
+		else if (S_ISDIR(st.st_mode) == 1)
+			ft_putstr("cd: permission denied: ");
+		else
+			ft_putstr("cd: no such file of directory: ");
+		ft_putendl(path);
+	}
 }
 
 void		ft_verif_cd(t_shell *shell)
@@ -50,15 +143,16 @@ void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 	char	**update_env;
 	char	**update_env2;
 
+	/* maj pwd */
 	i = 0;
 	if (pwd == 0)
 	{
 		update_env = (char **)malloc(sizeof(char *)
-					* ft_tablen(shell->env_cpy) + 2);
+					* ft_tablen(shell->env_cpy) + 20);
 		while (shell->env_cpy[i])
 		{
 			update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
-			ft_strcat(update_env[i], shell->env_cpy[i]);
+			update_env[i] = ft_strcat(update_env[i], shell->env_cpy[i]);
 			i++;
 		}
 		update_env[i] = ft_strnew(3 + ft_strlen(shell->pwd) + 2);
@@ -66,16 +160,22 @@ void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 		ft_strcat(update_env[i], "=");
 		ft_strcat(update_env[i], shell->pwd);
 		update_env[i + 1] = NULL;
-		//ft_free_tab(shell->env_cpy);
-		//shell->env_cpy = update_env;
-		ft_free_setenv(shell, update_env);
+		ft_free_tab(shell->env_cpy);
+		int	ii = 0;
+		while (update_env[ii])
+		{
+			ft_putendl(update_env[ii]);
+			ii++;
+		}
+		shell->env_cpy = update_env;
 	}
 
+	/* maj oldpwd */
 	i = 0;
 	if (oldpwd == 0)
 	{
 		update_env2 = (char **)malloc(sizeof(char *)
-					* ft_tablen(shell->env_cpy) + 2);
+					* ft_tablen(shell->env_cpy) + 20);
 		while (shell->env_cpy[i])
 		{
 			update_env2[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
@@ -87,8 +187,7 @@ void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 		ft_strcat(update_env2[i], "=");
 		ft_strcat(update_env2[i], shell->pwd);
 		update_env2[i + 1] = NULL;
-		//ft_free_tab(shell->env_cpy);
-		//shell->env_cpy = update_env2;
-		ft_free_setenv(shell, update_env);
+		ft_free_tab(shell->env_cpy);
+		shell->env_cpy = update_env2;
 	}
 }

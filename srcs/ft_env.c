@@ -76,7 +76,7 @@ void		ft_parse_env(t_shell *shell, char *env[])
 	n = 0;
 	 while (env[i])
 		i++;
-	shell->env_cpy = (char **)malloc(sizeof(char *) * i + 1);
+	shell->env_cpy = (char **)malloc(sizeof(char *) * i + 10);
 	n = i;
 	i = 0;
 	while (i < n)
