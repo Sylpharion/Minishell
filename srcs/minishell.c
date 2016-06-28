@@ -35,18 +35,23 @@ void		ft_loop(t_shell	*shell)
 		shell->trimline = ft_strtrim(shell->line);
 		shell->splitline = ft_strsplit(shell->trimline, ' ');
 		if (!shell->splitline[0])
+		{
+			free(shell->trimline);
+	 		free(shell->line);
+	 		ft_free_tab(shell->splitline);
 			ft_swaggy_prompt();
+		}
 	 	else
 	 	{
 		 	if (ft_isexec(shell, shell->splitline[0]) == 0)
 		 		ft_error(*shell);
 		 	else
 			 	ft_exec(shell, shell->splitline[0], shell->env_cpy);
+			free(shell->trimline);
+	 		free(shell->line);
+	 		ft_free_tab(shell->splitline);
 	 		ft_swaggy_prompt();
 	 	}
-	 	free(shell->trimline);
-	 	free(shell->line);
-	 	ft_free_tab(shell->splitline);
 	}
 }
 

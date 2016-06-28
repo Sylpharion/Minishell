@@ -16,9 +16,14 @@ void		ft_env(t_shell *shell)
 {
 	//if (ft_tablen(shell->splitline) == 1)
 	//ft_printenv(shell);
-	int i = 0;
+	int i;
+
+	i = 0;
 	while (shell->env_cpy[i])
-		ft_putendl(shell->env_cpy[i++]);
+	{
+		ft_putendl(shell->env_cpy[i]);
+		i++;
+	}
 }
 
 void		ft_printenv(t_shell *shell)
@@ -76,11 +81,17 @@ void		ft_parse_env(t_shell *shell, char *env[])
 	i = 0;
 	while (i < n)
 	{
+		shell->env_cpy[i] = ft_strnew(ft_strlen(env[i]));
+		i++;
+	}
+	n = i;
+	i = 0;
+	while (i < n)
+	{
 		if (strncmp(env[i], "SHLVL", 5) != 0)
-			shell->env_cpy[i] = ft_strdup(env[i]);
+			ft_strcpy(shell->env_cpy[i], env[i]);
 		else
 		{
-			shell->env_cpy[i] = ft_strnew(ft_strlen(env[i]));
 			ft_strcat(shell->env_cpy[i], "SHLVL=");
 			tmp = ft_itoa(ft_atoi(&env[i][6]) + 1);
 			ft_strcat(shell->env_cpy[i], tmp);

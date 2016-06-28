@@ -61,6 +61,8 @@ int			ft_isexec(t_shell *shell, char *s)
 		ft_strcmp(shell->splitline[0], "setenv") != 0 &&
 		ft_strcmp(shell->splitline[0], "unsetenv") != 0 &&
 		ft_strcmp(shell->splitline[0], "exit") != 0 &&
+		ft_strcmp(shell->splitline[0], "echo") != 0 &&
+		ft_strcmp(shell->splitline[0], "printenv") != 0 &&
 		ft_access(shell, s) != 0)
 		return (0);
 	else

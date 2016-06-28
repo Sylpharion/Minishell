@@ -60,3 +60,17 @@ void		ft_init(t_shell *shell, char **argv)
 	shell->ptr = ft_ptr_init();
 	shell->tab = ft_tab_init();
 }
+
+void		ft_free_tab(char **tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+	{
+		if(tab[i])
+			free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
