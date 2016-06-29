@@ -32,7 +32,7 @@ void		ft_delete(t_shell *shell)
 
 	i = ft_tablen(shell->env_cpy);
 	j = 0;
-	update_env = (char **)malloc(sizeof(char *) * i + 10);
+	update_env = (char **)malloc(sizeof(char *) * i + 1);
 	i = 0;
 	while (i < ft_tablen(shell->env_cpy))
 	{

@@ -17,7 +17,11 @@ void		ft_cd(t_shell *shell)
 	ft_verif_cd(shell);
 	if (!shell->splitline[1])
 		ft_go_home(shell);
-
+	// else if (ft_strcmp(shell->splitline[1], "-"))
+	// 	(void)
+	else if (ft_tablen(shell->splitline) > 2)
+		ft_putendl("cd: Too many arguments.");
+	//else
 }
 
 void		ft_go_home(t_shell *shell)
@@ -35,20 +39,26 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 	char	*tmp;
 	char	*pwd;
 
+	/* init pwd */
+
 	i = 0;
-	update_env = (char **)malloc(sizeof(char *) * ft_tablen(shell->env_cpy) + 10);
+	update_env = (char **)malloc(sizeof(char *) * ft_tablen(shell->env_cpy) + 1);
 	while(shell->env_cpy[i])
 	{
 		tmp = ft_cut_arg(shell->env_cpy[i]);
 		if (ft_strcmp(tmp, "PWD") == 0)
 		{
-			pwd = ft_strdup(shell->env_cpy[i]);
+			pwd = ft_strnew(ft_strlen(shell->env_cpy[i]));
+			ft_strcpy(pwd, shell->env_cpy[i]);
 			free(tmp);
 			break ;
 		}
 		free(tmp);
 		i++;
 	}
+
+	/* new pwd */
+
 	i = 0;
 	while(shell->env_cpy[i])
 	{
@@ -56,24 +66,25 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 		if (ft_strcmp(tmp, "PWD") == 0)
 		{
 			free(shell->env_cpy[i]);
-			shell->env_cpy[i] = getcwd(NULL, 0);
+			free(tmp);
+			tmp = ft_strnew(ft_strlen(shell->pwd) + 5);
+			ft_strcat(tmp, "PWD=");
+			ft_strcat(tmp, shell->pwd);
+			shell->env_cpy[i] = ft_strdup(tmp);
 		}
 		else if (ft_strcmp(tmp, "OLDPWD") == 0)
 		{
 			free(shell->env_cpy[i]);
 			shell->env_cpy[i] = pwd;
 		}
-		// else
-		// {
-		// 	update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
-		// 	ft_strcpy(update_env[i], shell->env_cpy[i]);
-		// }
+		update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
+		ft_strcpy(update_env[i], shell->env_cpy[i]);
 		free(tmp);
 		i++;
 	}
-	// update_env[i] = NULL;
-	// ft_free_tab(shell->env_cpy);
-	// shell->env_cpy = update_env;
+	update_env[i] = NULL;
+	ft_free_tab(shell->env_cpy);
+	shell->env_cpy = update_env;
 }
 
 void		ft_cd_home_error(t_shell *shell, char *path)
@@ -161,12 +172,6 @@ void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 		ft_strcat(update_env[i], shell->pwd);
 		update_env[i + 1] = NULL;
 		ft_free_tab(shell->env_cpy);
-		int	ii = 0;
-		while (update_env[ii])
-		{
-			ft_putendl(update_env[ii]);
-			ii++;
-		}
 		shell->env_cpy = update_env;
 	}
 

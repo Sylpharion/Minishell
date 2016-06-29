@@ -37,10 +37,11 @@ void		ft_free_setenv(t_shell *shell, char **update_env)
 	if (ft_tablen(update_env) > 0)
 	{
 		ft_free_tab(shell->env_cpy);
-		shell->env_cpy = (char **)malloc(sizeof(char *)	* ft_tablen(update_env) + 10);
+		shell->env_cpy = (char **)malloc(sizeof(char *)	* ft_tablen(update_env) + 1);
 		while (update_env[i])
 		{
-			shell->env_cpy[i] = ft_strdup(update_env[i]);
+			shell->env_cpy[i] = ft_strnew(ft_strlen(update_env[i]));
+			ft_strcpy(shell->env_cpy[i], update_env[i]);
 			i++;
 		}
 		shell->env_cpy[i] = NULL;

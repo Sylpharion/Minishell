@@ -108,7 +108,6 @@ void		ft_echo_var(char **env, char *str);
 void		ft_print_var(char **env, char *str);
 void		ft_echo_quote(char *str);
 void		ft_echo_brut(char *str);
-void		ft_echo_tild(t_shell *shell, char *str);
 
 /* autres */
 
