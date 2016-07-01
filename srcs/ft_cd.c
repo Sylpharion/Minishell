@@ -14,22 +14,38 @@
 
 void		ft_cd(t_shell *shell)
 {
+	int		i;
+
 	ft_verif_cd(shell);
-	if (!shell->splitline[1])
-		ft_go_home(shell);
-	// else if (ft_strcmp(shell->splitline[1], "-"))
-	// 	(void)
+	if (!shell->splitline[1] || ft_strcmp(shell->splitline[1], "--") == 0)
+		ft_cd_home(shell);
+	// if (ft_strcmp(shell->splitline[1], "-") == 0)
+	// 	ft_cd_moins(shell);
 	else if (ft_tablen(shell->splitline) > 2)
 		ft_putendl("cd: Too many arguments.");
-	//else
+	else
+		ft_exec_cd(shell);
 }
 
-void		ft_go_home(t_shell *shell)
+// void		ft_cd_moins(t_shell *shell)
+// {
+	
+// }
+
+void		ft_exec_cd(t_shell *shell)
+{
+	if (chdir(shell->pathdir) == -1)
+		ft_cd_error(shell, shell->splitline[1]);
+	// else
+	// 	ft_new_oldpwd(shell, shell->splitline[1]);
+}
+
+void		ft_cd_home(t_shell *shell)
 {
 	if (chdir(shell->home) == -1)
 		ft_cd_home_error(shell, shell->home);
-	else
-		ft_new_oldpwd(shell, shell->home);
+	// else
+	// 	ft_new_oldpwd(shell, shell->home);
 }
 
 void		ft_new_oldpwd(t_shell *shell, char *path)
@@ -65,20 +81,24 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 		tmp = ft_cut_arg(shell->env_cpy[i]);
 		if (ft_strcmp(tmp, "PWD") == 0)
 		{
-			free(shell->env_cpy[i]);
 			free(tmp);
 			tmp = ft_strnew(ft_strlen(shell->pwd) + 5);
 			ft_strcat(tmp, "PWD=");
-			ft_strcat(tmp, shell->pwd);
-			shell->env_cpy[i] = ft_strdup(tmp);
+			ft_strcat(tmp, getcwd(NULL, 0));
+			update_env[i] = ft_strnew(ft_strlen(tmp));
+			ft_strcpy(update_env[i], tmp);
 		}
 		else if (ft_strcmp(tmp, "OLDPWD") == 0)
 		{
-			free(shell->env_cpy[i]);
-			shell->env_cpy[i] = pwd;
+			update_env[i] = ft_strnew(ft_strlen(pwd) + 7);
+			ft_strcat(update_env[i], "OLDPWD=");
+			ft_strcat(update_env[i], pwd);
 		}
-		update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
-		ft_strcpy(update_env[i], shell->env_cpy[i]);
+		else
+		{
+			update_env[i] = ft_strnew(ft_strlen(shell->env_cpy[i]));
+			ft_strcpy(update_env[i], shell->env_cpy[i]);
+		}
 		free(tmp);
 		i++;
 	}
@@ -99,7 +119,7 @@ void		ft_cd_home_error(t_shell *shell, char *path)
 		if (ft_strcmp(tmp, "HOME") == 0)
 		{
 			free(tmp);
-			ft_cd_home_error_sup(shell, path);
+			ft_cd_error(shell, path);
 			return ;
 		}
 		free(tmp);
@@ -108,19 +128,19 @@ void		ft_cd_home_error(t_shell *shell, char *path)
 	ft_putendl("cd: No home directory.");
 }
 
-void		ft_cd_home_error_sup(t_shell *shell, char *path)
+void		ft_cd_error(t_shell *shell, char *path)
 {
 	struct	stat st;
 	if (lstat(path, &st) == 0)
 	{
-		if (S_ISDIR(st.st_mode) != 1)
+		if (S_ISREG(st.st_mode) == 1)
 			ft_putstr("cd: not a directory: ");
 		else if (S_ISDIR(st.st_mode) == 1)
 			ft_putstr("cd: permission denied: ");
-		else
-			ft_putstr("cd: no such file of directory: ");
-		ft_putendl(path);
 	}
+	else
+		ft_putstr("cd: no such file of directory: ");
+	ft_putendl(path);
 }
 
 void		ft_verif_cd(t_shell *shell)
@@ -146,7 +166,26 @@ void		ft_verif_cd(t_shell *shell)
 	if (!shell->pwd)
 		shell->pwd = getcwd(NULL, 0);
 	ft_add_pwd(shell, pwd, oldpwd);
+	shell->pathdir = ft_strnew(ft_strlen(shell->splitline[1]));
+	ft_strcpy(shell->pathdir, shell->splitline[1]);
+	//ft_parse_cd(shell, shell->splitline[1]);
 }
+
+// void		ft_parse_cd(t_shell *shell, char *path)
+// {
+// 	int		i;
+// 	char	*pathdir;
+
+// 	i = 0;
+// 	if (shell->splitline[1] || ft_strcmp(shell->splitline[1], "--") != 0)
+// 	{
+// 		pathdir = ft_strnew(ft_strlen(path) + 1);
+// 		ft_strcat(pathdir, path);
+// 		pathdir[ft_strlen(pathdir)] = 0;
+// 		shell->pathdir = ft_strdup(pathdir);
+// 		free(pathdir);
+// 	}
+// }
 
 void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 {

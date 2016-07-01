@@ -18,7 +18,7 @@ void		ft_setenv(t_shell *shell)
 
 	if (ft_tablen(shell->splitline) < 2)
 	{
-		ft_printenv(shell);
+		ft_env(shell);
 		return ;
 	}
 	else if (ft_tablen(shell->splitline) > 3)

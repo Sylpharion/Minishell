@@ -51,6 +51,7 @@ void		ft_init(t_shell *shell, char **argv)
 	shell->pid = 0;
 	shell->line = NULL;
 	shell->path = NULL;
+	shell->pathdir = NULL;
 	shell->splitline = NULL;
 	shell->exec = NULL;
 	shell->env_cpy = NULL;
