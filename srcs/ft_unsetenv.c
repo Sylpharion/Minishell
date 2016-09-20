@@ -101,3 +101,29 @@ char		*ft_cut_arg(char *arg)
 	res[i] = 0;
 	return (res);
 }
+
+char	*ft_cut_val(char *arg)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	i = ft_strlen(arg);
+	j = 0;
+	while (arg[i] != '=')
+	{
+		i--;
+		j++;
+	}
+	i++;
+	res = ft_strnew(j + 1);
+	j = 0;
+	while(arg[i])
+	{
+		res[j] = arg[i];
+		i++;
+		j++;
+	}
+	res[j] = 0;
+	return (res);
+}

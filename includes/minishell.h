@@ -115,6 +115,7 @@ void		ft_echo_brut(char *str);
 
 int			ft_tablen(char **tab);
 char		*ft_cut_arg(char *arg);
+char		*ft_cut_val(char *arg);
 char		*ft_add_env(t_shell *shell);
 char		*ft_get_the_line(void);
 void		ft_free_tab(char **tab);

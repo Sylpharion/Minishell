@@ -19,33 +19,54 @@ void		ft_cd(t_shell *shell)
 	ft_verif_cd(shell);
 	if (!shell->splitline[1] || ft_strcmp(shell->splitline[1], "--") == 0)
 		ft_cd_home(shell);
-	// if (ft_strcmp(shell->splitline[1], "-") == 0)
-	// 	ft_cd_moins(shell);
+	else if (ft_strcmp(shell->splitline[1], "-") == 0)
+		ft_cd_moins(shell);
 	else if (ft_tablen(shell->splitline) > 2)
 		ft_putendl("cd: Too many arguments.");
 	else
 		ft_exec_cd(shell);
 }
 
-// void		ft_cd_moins(t_shell *shell)
-// {
-	
-// }
+void		ft_cd_moins(t_shell *shell)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (shell->env_cpy[i])
+	{
+		tmp = ft_cut_arg(shell->env_cpy[i]);
+		if (ft_strcmp(tmp, "OLDPWD") == 0)
+		{
+			free(tmp);
+		 	tmp = ft_cut_val(shell->env_cpy[i]);
+		 	break ;
+		}
+		free(tmp);
+		i++;
+	}
+	if (chdir(tmp) == -1)
+		ft_cd_error(shell, shell->splitline[1]);
+	else
+		ft_new_oldpwd(shell, shell->splitline[1]);
+	free(tmp);
+}
 
 void		ft_exec_cd(t_shell *shell)
 {
 	if (chdir(shell->pathdir) == -1)
 		ft_cd_error(shell, shell->splitline[1]);
-	// else
-	// 	ft_new_oldpwd(shell, shell->splitline[1]);
+	else
+		ft_new_oldpwd(shell, shell->splitline[1]);
 }
 
 void		ft_cd_home(t_shell *shell)
 {
+	chdir(shell->home);
 	if (chdir(shell->home) == -1)
 		ft_cd_home_error(shell, shell->home);
-	// else
-	// 	ft_new_oldpwd(shell, shell->home);
+	else
+		ft_new_oldpwd(shell, shell->home);
 }
 
 void		ft_new_oldpwd(t_shell *shell, char *path)
@@ -53,6 +74,7 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 	int		i;
 	char	**update_env;
 	char	*tmp;
+	char	*tmp2;
 	char	*pwd;
 
 	/* init pwd */
@@ -64,8 +86,7 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 		tmp = ft_cut_arg(shell->env_cpy[i]);
 		if (ft_strcmp(tmp, "PWD") == 0)
 		{
-			pwd = ft_strnew(ft_strlen(shell->env_cpy[i]));
-			ft_strcpy(pwd, shell->env_cpy[i]);
+			pwd = ft_cut_val(shell->env_cpy[i]);
 			free(tmp);
 			break ;
 		}
@@ -83,16 +104,19 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 		{
 			free(tmp);
 			tmp = ft_strnew(ft_strlen(shell->pwd) + 5);
+			tmp2 = getcwd(NULL, 0);
 			ft_strcat(tmp, "PWD=");
-			ft_strcat(tmp, getcwd(NULL, 0));
+			ft_strcat(tmp, tmp2);
 			update_env[i] = ft_strnew(ft_strlen(tmp));
 			ft_strcpy(update_env[i], tmp);
+			free(tmp2);
 		}
 		else if (ft_strcmp(tmp, "OLDPWD") == 0)
 		{
-			update_env[i] = ft_strnew(ft_strlen(pwd) + 7);
+			update_env[i] = ft_strnew(ft_strlen(pwd) + 8);
 			ft_strcat(update_env[i], "OLDPWD=");
 			ft_strcat(update_env[i], pwd);
+			ft_putendl(update_env[i]);
 		}
 		else
 		{
@@ -102,6 +126,7 @@ void		ft_new_oldpwd(t_shell *shell, char *path)
 		free(tmp);
 		i++;
 	}
+	free(pwd);
 	update_env[i] = NULL;
 	ft_free_tab(shell->env_cpy);
 	shell->env_cpy = update_env;
@@ -131,6 +156,7 @@ void		ft_cd_home_error(t_shell *shell, char *path)
 void		ft_cd_error(t_shell *shell, char *path)
 {
 	struct	stat st;
+
 	if (lstat(path, &st) == 0)
 	{
 		if (S_ISREG(st.st_mode) == 1)
@@ -166,26 +192,21 @@ void		ft_verif_cd(t_shell *shell)
 	if (!shell->pwd)
 		shell->pwd = getcwd(NULL, 0);
 	ft_add_pwd(shell, pwd, oldpwd);
-	shell->pathdir = ft_strnew(ft_strlen(shell->splitline[1]));
+	if (shell->splitline[1])
+	{
+		tmp = getcwd(NULL, 0);
+		shell->pathdir = ft_strnew(ft_strlen(tmp) + ft_strlen(shell->splitline[1]) + 10);
+		ft_strcat(shell->pathdir, tmp);
+		ft_strcat(shell->pathdir, shell->splitline[1]);
+		free(tmp);
+	}
+	else 
+	{
+		shell->pathdir = ft_strnew(ft_strlen(shell->home));
+		ft_strcpy(shell->pathdir, shell->home);
+	}
 	ft_strcpy(shell->pathdir, shell->splitline[1]);
-	//ft_parse_cd(shell, shell->splitline[1]);
 }
-
-// void		ft_parse_cd(t_shell *shell, char *path)
-// {
-// 	int		i;
-// 	char	*pathdir;
-
-// 	i = 0;
-// 	if (shell->splitline[1] || ft_strcmp(shell->splitline[1], "--") != 0)
-// 	{
-// 		pathdir = ft_strnew(ft_strlen(path) + 1);
-// 		ft_strcat(pathdir, path);
-// 		pathdir[ft_strlen(pathdir)] = 0;
-// 		shell->pathdir = ft_strdup(pathdir);
-// 		free(pathdir);
-// 	}
-// }
 
 void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd)
 {

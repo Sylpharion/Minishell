@@ -23,12 +23,8 @@ void		ft_echo(t_shell *shell)
 	{
 		while (shell->splitline[i])
 		{
-			if (shell->splitline[i][0] == '$')
-				ft_echo_var(shell->env_cpy, shell->splitline[i]);
-			else
-				ft_echo_brut(shell->splitline[i]);
-			if (!shell->splitline[i + 1] &&
-				ft_strcmp(shell->splitline[1], "-n") != 0)
+			ft_echo_brut(shell->splitline[i]);
+			if (!shell->splitline[i + 1] && ft_strcmp(shell->splitline[1], "-n") != 0)
 			{
 				ft_putchar('\n');
 				break ;
@@ -59,30 +55,30 @@ void		ft_echo_quote(char *str)
 	}
 }
 
-void		ft_echo_var(char **env, char *str)
-{
-	char	*str2;
-	int		i;
-	int		j;
+// void		ft_echo_var(char **env, char *str)
+// {
+// 	char	*str2;
+// 	int		i;
+// 	int		j;
 
-	i = 1;
-	j = 0;
-	if (ft_strcmp(str, "$") == 0)
-	{
-		ft_putchar('$');
-		return ;
-	}
-	str2 = ft_strnew(ft_strlen(str));
-	while (str[i])
-	{
-		str2[j] = str[i];
-		i++;
-		j++;
-	}
-	str2[j] = 0;
-	ft_print_var(env, str2);
-	free(str2);
-}
+// 	i = 1;
+// 	j = 0;
+// 	if (ft_strcmp(str, "$") == 0)
+// 	{
+// 		ft_putchar('$');
+// 		return ;
+// 	}
+// 	str2 = ft_strnew(ft_strlen(str));
+// 	while (str[i])
+// 	{
+// 		str2[j] = str[i];
+// 		i++;
+// 		j++;
+// 	}
+// 	str2[j] = 0;
+// 	ft_print_var(env, str2);
+// 	free(str2);
+// }
 
 void		ft_print_var(char **env, char *str)
 {
