@@ -46,24 +46,10 @@ typedef struct		s_shell
 }					t_shell;
 
 /*
-	rappel :
-
-	init = 1 fois au debut du prog
-	free (tab) != free d'un tableau
-
-	while (tab[i])
-		free(tab[i]);
-	free(tab);
-
-	important : free de supprime pas les donnee de tes variables
-	free libere la memoire mais supprime pas le contenue
-
-	exemple :
-		malloc("coucou\n"); => on as allouer 7 octect ou tu as ecris coucou
-		free(la variable de coucou); => liberation de la memoire mais pas le contenu 
 */
 
-void		ft_parse_env(t_shell *shell, char *env[]);
+void		ft_catch(int sig);
+void		ft_parse_env(t_shell *shell, char *env[], int i, int n);
 void		ft_create_env(t_shell *shell);
 void		ft_init(t_shell *shell, char **argv);
 void		ft_path(t_shell *shell, char **env);
@@ -83,6 +69,7 @@ void		ft_env(t_shell *shell);
 void		ft_setenv(t_shell *shell);
 char		**ft_update_setenv(t_shell *shell);
 void		ft_free_setenv(t_shell *shell, char  **update_env);
+void		ft_free_setenv_plus(t_shell *shell, char **update_env);
 
 void		ft_printenv(t_shell *shell);
 
@@ -93,22 +80,27 @@ void		ft_delete(t_shell *shell);
 
 
 void		ft_cd(t_shell *shell);
-void		ft_verif_cd(t_shell *shell);
+void		ft_verif_cd(t_shell *shell, int i, int pwd, int oldpwd);
+char		*ft_verif_cd_pathdir(t_shell *shell, char *tmp);
 void		ft_add_pwd(t_shell *shell, int pwd, int oldpwd);
 void		ft_cd_home(t_shell *shell);
-void		ft_new_oldpwd(t_shell *shell, char *path);
+void		ft_new_oldpwd(t_shell *shell, char *path, int i);
 void		ft_cd_home_error(t_shell *shell, char *path);
 void		ft_cd_error(t_shell *shell, char *path);
 void		ft_exec_cd(t_shell *shell);
 void		ft_parse_cd(t_shell *shell, char *path);
 void		ft_cd_moins(t_shell *shell);
+char		*ft_init_pwd(t_shell *shell);
+char		*ft_pwd_loop(t_shell *shell);
+char		*ft_oldpwd_loop(t_shell *shell, char *path);
+void		ft_maj_pwd(t_shell *shell);
+void		ft_maj_oldpwd(t_shell *shell);
 
-void		ft_exit(t_shell *shell);
+/* ft_echo */
 
 void		ft_echo(t_shell *shell);
 void		ft_echo_var(char **env, char *str);
 void		ft_print_var(char **env, char *str);
-void		ft_echo_quote(char *str);
 void		ft_echo_brut(char *str);
 
 /* autres */
@@ -120,6 +112,7 @@ char		*ft_add_env(t_shell *shell);
 char		*ft_get_the_line(void);
 void		ft_free_tab(char **tab);
 void		ft_print_arg(char *s);
+void		ft_exit(t_shell *shell);
 
 #endif
 

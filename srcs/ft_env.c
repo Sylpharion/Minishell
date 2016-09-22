@@ -67,27 +67,20 @@ void		ft_print_arg(char *s)
 	}
 }
 
-void		ft_parse_env(t_shell *shell, char *env[])
+void		ft_parse_env(t_shell *shell, char *env[], int i, int n)
 {
-	int		i;
-	int		n;
 	char *tmp;
 
-	i = 0;
-	n = 0;
-	 while (env[i])
+	while (env[i])
 		i++;
 	shell->env_cpy = (char **)malloc(sizeof(char *) * i + 1);
 	n = i;
-	i = 0;
-	while (i < n)
-	{
+	i = -1;
+	while (++i < n)
 		shell->env_cpy[i] = ft_strnew(ft_strlen(env[i]));
-		i++;
-	}
 	n = i;
-	i = 0;
-	while (i < n)
+	i = -1;
+	while (++i < n)
 	{
 		if (strncmp(env[i], "SHLVL", 5) != 0)
 			ft_strcpy(shell->env_cpy[i], env[i]);
@@ -97,7 +90,6 @@ void		ft_parse_env(t_shell *shell, char *env[])
 			tmp = ft_itoa(ft_atoi(&env[i][6]) + 1);
 			ft_strcat(shell->env_cpy[i], tmp);
 		}
-	 	i++;
 	}
 	free(tmp);
 	shell->env_cpy[i] = NULL;

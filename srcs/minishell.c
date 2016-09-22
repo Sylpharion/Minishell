@@ -18,7 +18,7 @@ int			main(int argc, char **argv, char *env[])
 	
 	ft_init(&shell, argv);
 	if (env[0])
-		ft_parse_env(&shell, env);
+		ft_parse_env(&shell, env, 0, 0);
 	else
 		ft_create_env(&shell);
 	ft_path(&shell, shell.env_cpy);
@@ -31,6 +31,7 @@ void		ft_loop(t_shell	*shell)
 {
 	while (42)
 	{
+		signal(SIGINT, ft_catch);
 		shell->line = ft_get_the_line();
 		shell->trimline = ft_strtrim(shell->line);
 		shell->splitline = ft_strsplit(shell->trimline, ' ');
@@ -55,6 +56,11 @@ void		ft_loop(t_shell	*shell)
 	}
 }
 
+void		ft_catch(int sig)
+{
+	return ;
+}
+
 char		*ft_get_the_line(void)
 {
 	char	*str;
@@ -68,21 +74,16 @@ char		*ft_get_the_line(void)
 
 void		ft_error(t_shell shell)
 {
-	// if (stat(shell.exec, &shell.st) == -1)
-	// {
-	// 	ft_putstr("minishell: no such file or directory: ");
-	// 	ft_putendl(s);
-	// }
-	// else if (access(shell.exec, F_OK) == 0 && access(shell.exec, X_OK) == -1)
-	// {
-	// 	ft_putstr("minishell: permission denied: ");
-	// 	ft_putendl(s);
-	// }
-	// else
-	// {
+	if (stat(shell.exec, &shell.st) != -1)
+	{
+		if (access(shell.exec, X_OK) == -1)
+			ft_putstr("minishell: permission denied: ");
+		else
+			ft_putstr("minishell: no such file or directory: ");
+	}
+	else
 		ft_putstr("minishell: command not found: ");
-		ft_putendl(shell.splitline[0]);
-	//}
+	ft_putendl(shell.splitline[0]);
 }
 
 int			ft_tablen(char **tab)
@@ -97,8 +98,13 @@ int			ft_tablen(char **tab)
 
 void		ft_swaggy_prompt(void)
 {
+	char	*tmp;
+
+	tmp = getcwd(NULL, 0);
 	ft_putrainbow("[MY", RED);
 	ft_putrainbow("_SWAGGY_", BLUE);
-	ft_putrainbow("SHELL]", YELLOW);
+	ft_putrainbow("SHELL] ", YELLOW);
+	ft_putrainbow(tmp, GREEN);
 	ft_putrainbow(" ➤ ", GREEN);
+	free(tmp);
 }

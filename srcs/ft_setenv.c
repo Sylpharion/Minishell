@@ -33,20 +33,8 @@ void		ft_free_setenv(t_shell *shell, char **update_env)
 	int		i;
 	char	*tmp;
 
-	i = 0;
 	if (ft_tablen(update_env) > 0)
-	{
-		ft_free_tab(shell->env_cpy);
-		shell->env_cpy = (char **)malloc(sizeof(char *)	* ft_tablen(update_env) + 1);
-		while (update_env[i])
-		{
-			shell->env_cpy[i] = ft_strnew(ft_strlen(update_env[i]));
-			ft_strcpy(shell->env_cpy[i], update_env[i]);
-			i++;
-		}
-		shell->env_cpy[i] = NULL;
-		ft_free_tab(update_env);
-	}
+		ft_free_setenv_plus(shell, update_env);
 	i = 0;
 	while (shell->env_cpy[i] && ft_strcmp(shell->splitline[0], "setenv") == 0)
 	{
@@ -61,6 +49,23 @@ void		ft_free_setenv(t_shell *shell, char **update_env)
 		free(tmp);
 		i++;
 	}
+}
+
+void		ft_free_setenv_plus(t_shell *shell, char **update_env)
+{
+	int		i;
+
+	i = 0;
+	ft_free_tab(shell->env_cpy);
+	shell->env_cpy = (char **)malloc(sizeof(char *)	* ft_tablen(update_env) + 1);
+	while (update_env[i])
+	{
+		shell->env_cpy[i] = ft_strnew(ft_strlen(update_env[i]));
+		ft_strcpy(shell->env_cpy[i], update_env[i]);
+		i++;
+	}
+	shell->env_cpy[i] = NULL;
+	ft_free_tab(update_env);
 }
 
 char		**ft_update_setenv(t_shell *shell)
