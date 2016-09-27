@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_striter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/02/11 15:02:26 by smassand          #+#    #+#             */
+/*   Updated: 2015/02/16 11:49:11 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void		ft_exit(t_shell *shell)
+void	ft_striter(char *s, void (*f)(char *))
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	int i;
+
+	i = 0;
+	while (s[i])
+	{
+		f(&s[i]);
+		i++;
+	}
 }

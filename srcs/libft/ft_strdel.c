@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/02/10 13:52:10 by smassand          #+#    #+#             */
+/*   Updated: 2015/03/16 15:50:32 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+void	ft_strdel(char **as)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	ft_memdel((void **)as);
 }

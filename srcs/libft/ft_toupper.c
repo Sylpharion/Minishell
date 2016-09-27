@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/01/16 13:48:04 by smassand          #+#    #+#             */
+/*   Updated: 2015/01/16 13:53:54 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void		ft_exit(t_shell *shell)
+int		ft_toupper(int c)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	if (c >= 97 && c <= 122)
+		return (c - 32);
+	else
+		return (c);
 }

@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/01/13 12:26:09 by smassand          #+#    #+#             */
+/*   Updated: 2016/02/11 10:41:38 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+void	ft_putstr(const char *str)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	write(1, str, i);
 }

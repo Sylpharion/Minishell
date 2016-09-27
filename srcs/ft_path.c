@@ -20,7 +20,6 @@ void		ft_path(t_shell *shell, char **env)
 
 	i = 0;
 	ok = 0;
-
 	while (env[i])
 	{
 		if (strncmp(env[i], "PATH", 4) == 0)

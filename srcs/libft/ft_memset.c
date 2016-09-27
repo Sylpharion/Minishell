@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/02/09 11:57:48 by smassand          #+#    #+#             */
+/*   Updated: 2015/03/31 13:23:46 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+void			*ft_memset(void *s, int c, size_t n)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	size_t		i;
+	char		*s_cpy;
+
+	i = 0;
+	s_cpy = (char *)s;
+	if (!s || !n)
+		return (s);
+	while (i < n)
+	{
+		s_cpy[i] = c;
+		i++;
+	}
+	return (s);
 }

@@ -48,6 +48,7 @@ void		ft_printenv(t_shell *shell)
 			ft_print_arg(shell->env_cpy[i]);
 			ft_putchar('\n');
 		}
+		free(tmp);
 		i++;
 	}
 }

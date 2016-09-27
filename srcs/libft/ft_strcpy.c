@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2014/12/03 16:29:58 by smassand          #+#    #+#             */
+/*   Updated: 2015/03/31 13:26:24 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+char			*ft_strcpy(char *dest, const char *src)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	int			i;
+	char		*srcpy;
+
+	i = 0;
+	srcpy = (char *)src;
+	if (srcpy == NULL)
+		return (NULL);
+	while (src[i])
+	{
+		dest[i] = srcpy[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

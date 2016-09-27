@@ -20,28 +20,33 @@ void		ft_echo(t_shell *shell)
 	if (ft_strcmp(shell->splitline[1], "-n") == 0)
 		i++;
 	if (ft_tablen(shell->splitline) > 1)
+		ft_echo_loop(shell, i);
+	else
 	{
-		while (shell->splitline[i])
+		if (ft_strcmp(shell->splitline[1], "-n") != 0)
+			ft_putchar('\n');
+	}
+}
+
+void		ft_echo_loop(t_shell *shell, int i)
+{
+	while (shell->splitline[i])
+	{
+		if (shell->splitline[i][0] == '$')
+			ft_echo_var(shell->env_cpy, shell->splitline[i]);
+		else
+			ft_echo_brut(shell->splitline[i]);
+		i++;
+		if (shell->splitline[i])
+			ft_putchar(' ');
+		else
 		{
-			if (shell->splitline[i][0] == '$')
-				ft_echo_var(shell->env_cpy, shell->splitline[i]);
-			else
-				ft_echo_brut(shell->splitline[i]);
-			i++;
-			if (shell->splitline[i])
-				ft_putchar(' ');
-			if (!shell->splitline[i + 1] && ft_strcmp(shell->splitline[1],
-				"-n") != 0)
+			if (ft_strcmp(shell->splitline[1], "-n") != 0)
 			{
 				ft_putchar('\n');
 				break ;
 			}
 		}
-	}
-	else
-	{
-		if (ft_strcmp(shell->splitline[1], "-n") != 0)
-			ft_putchar('\n');
 	}
 }
 

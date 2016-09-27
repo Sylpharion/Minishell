@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2015/02/10 13:07:36 by smassand          #+#    #+#             */
+/*   Updated: 2016/01/09 09:24:31 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+char	*ft_strnew(size_t size)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	char	*p;
+	size_t	i;
+
+	p = (char *)malloc(sizeof(char) * (size + 1));
+	if (p == NULL)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		p[i] = 0;
+		i++;
+	}
+	return (p);
 }

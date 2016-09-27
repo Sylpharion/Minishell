@@ -1,19 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smassand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: smassand <smassand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:48:11 by smassand          #+#    #+#             */
-/*   Updated: 2016/06/01 14:48:13 by smassand         ###   ########.fr       */
+/*   Created: 2014/12/15 17:48:45 by smassand          #+#    #+#             */
+/*   Updated: 2015/03/23 11:47:14 by smassand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void		ft_exit(t_shell *shell)
+void		ft_bzero(void *s, size_t n)
 {
-	ft_free_tab(shell->env_cpy);
-	exit(0);
+	size_t		i;
+	char		*s2;
+
+	i = 0;
+	s2 = (char *)s;
+	if (n > 0)
+	{
+		while (i < n)
+		{
+			s2[i] = (unsigned char)0;
+			i++;
+		}
+	}
 }

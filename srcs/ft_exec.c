@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void		ft_exec(t_shell *shell, char *cmd, char *env[])
+void		ft_exec(t_shell *shell)
 {
 	char	*str;
 
@@ -63,24 +63,22 @@ int			ft_isexec(t_shell *shell, char *s)
 		ft_strcmp(shell->splitline[0], "exit") != 0 &&
 		ft_strcmp(shell->splitline[0], "echo") != 0 &&
 		ft_strcmp(shell->splitline[0], "printenv") != 0 &&
-		ft_access(shell, s) != 0)
+		ft_strcmp(shell->splitline[0], "builtins") != 0 &&
+		ft_access(shell, s, 0, NULL) != 0)
 		return (0);
 	else
 		return (1);
 }
 
-int			ft_access(t_shell *shell, char *s)
+int			ft_access(t_shell *shell, char *s, int i, char *tmp)
 {
 	char	*s2;
-	char 	*tmp;
-	int		i;
 
 	if (ft_strncmp(shell->splitline[0], "./", 2) == 0)
 	{
 		shell->exec = ft_strdup(shell->splitline[0]);
 		return (0);
 	}
-	i = 0;
 	s2 = ft_strnew(ft_strlen(s) + 2);
 	ft_strcat(s2, "/");
 	ft_strcat(s2, s);
